@@ -45,6 +45,7 @@ export function TransferTon() {
         >
           Transfer
         </Button>
+        <p>Maintain</p>
       </FlexBoxCol>
     </Card>
   );
