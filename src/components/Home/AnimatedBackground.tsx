@@ -5,7 +5,7 @@ import FloatingPlusOne from '../FloatingPlusOne';
 const AnimatedBackground = () => {
   const [helixSize, setHelixSize] = useState(60);
   return (
-    <div className="w-full h-screen bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-moveBackground bg-[length:200%_200%]">
+    <div className="w-full h-[screen] bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500 animate-moveBackground bg-[length:200%_200%]">
       <div className="w-full h-[10vh] border border-b-[#FFF]">
         <div className="flex items-center justify-between h-full px-4">
           <h1 className="text-white text-4xl font-bold">MADTAP</h1>

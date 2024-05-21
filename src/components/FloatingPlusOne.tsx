@@ -27,7 +27,7 @@ const FloatingPlusOne:FC<Props> = ({helixSize}) => {
   };
 
   return (
-    <div className="relative w-full" onClick={handleClick}>
+    <div className="w-full" onClick={handleClick}>
       {floaters.map((floater: any) => (
         <span
           key={floater.id}
