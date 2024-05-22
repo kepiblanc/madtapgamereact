@@ -6,10 +6,11 @@ import { helix } from 'ldrs'
 helix.register()
 
 interface Props {
-    helixSize: any;
+    helixColor: any;
+    pointsNo: number;
 }
 
-const FloatingPlusOne:FC<Props> = ({helixSize}) => {
+const FloatingPlusOne:FC<Props> = ({helixColor, pointsNo}) => {
   const [floaters, setFloaters] = useState<any>([]);
 
   const handleClick = (e: any) => {
@@ -38,14 +39,14 @@ const FloatingPlusOne:FC<Props> = ({helixSize}) => {
             animation: 'floatAndFade 2s forwards',
           }}
         >
-          +1
+          +{pointsNo}
         </span>
       ))}
       <div className="flex items-center justify-center">
         <l-helix
-            size={`${helixSize}`}
+            size={'150'}
             speed="2.5" 
-            color="white" 
+            color={helixColor}
         ></l-helix>
       </div>
     </div>
