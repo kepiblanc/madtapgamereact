@@ -1,0 +1,18 @@
+@keyframes chaseTom {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(600px); }
+  }
+  
+  @keyframes chaseJerry {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-600px); }
+  }
+  
+  .tom-chase {
+    animation: chaseTom 3s linear infinite;
+  }
+  
+  .jerry-chase {
+    animation: chaseJerry 3s linear infinite;
+  }
+  

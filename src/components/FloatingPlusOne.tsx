@@ -1,9 +1,12 @@
 // src/FloatingPlusOne.jsx
 import React, { FC, useState } from 'react';
 import '../floatAnimation.css';
-import { helix } from 'ldrs'
+//import { helix } from 'ldrs'
+//helix.register()
+import { quantum } from 'ldrs'
 
-helix.register()
+quantum.register()
+
 
 interface Props {
     helixColor: any;
@@ -43,11 +46,16 @@ const FloatingPlusOne:FC<Props> = ({helixColor, pointsNo}) => {
         </span>
       ))}
       <div className="flex items-center justify-center">
-        <l-helix
+        <l-quantum
+          size={'150'}
+          speed="5" 
+          color={helixColor}
+        ></l-quantum>
+        {/*<l-helix
             size={'150'}
             speed="2.5" 
             color={helixColor}
-        ></l-helix>
+        ></l-helix>*/}
       </div>
     </div>
   );
