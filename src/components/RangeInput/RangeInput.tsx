@@ -7,7 +7,7 @@ interface Props {
 
 const RangeInput:FC<Props> = ({ rangeValue }) => {
   return (
-    <div className="flex items-center justify-center">
+    <div className="flex items-center justify-center w-[90%] mw-auto">
       <div className="w-full p-4 flex gap-2 items-center justify-center">
         <input
           id="rangeInput"
@@ -17,7 +17,7 @@ const RangeInput:FC<Props> = ({ rangeValue }) => {
           max="100"
           value={rangeValue}
         />
-        <span className="text-[#FFF]">{rangeValue}%</span>
+        <span className="text-[#FFF]">{rangeValue}</span>
       </div>
     </div>
   );
