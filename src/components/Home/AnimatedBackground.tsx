@@ -71,7 +71,10 @@ const AnimatedBackground = () => {
       console.log(hasIncreased ? 'Value has increased' : 'Value has not increased');
       if (!hasIncreased && rangeValue !== 0) {
         setRangeValue(rangeValue - 1)
-        if (pointsNo !== 1 && rangeValue === 1) setPointsNo (pointsNo - 1)
+        if (pointsNo !== 1 && rangeValue === 0) {
+          setPointsNo (pointsNo - 1)
+          setRangeValue(100)
+        }
       }
 
       // Update the previous value to the current value for the next comparison
