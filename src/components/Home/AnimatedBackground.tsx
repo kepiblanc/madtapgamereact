@@ -7,6 +7,7 @@ import GoldPlayIcon from '../GoldPlayIcon';
 import GoldBarChartIcon from '../GoldBarChartIcon';
 import GoldTrophyIcon from '../GoldTrophyIcon';
 import axios from 'axios';
+import { API_URL } from '../../utils'
 
 const brightColors = [
   { name: "Electric Lime", code: "#CCFF00" },
@@ -63,6 +64,7 @@ const AnimatedBackground = () => {
   const [bgGradient, setBgGradient] = useState('bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500')
   const [currentView, setCurrentView] = useState('play')
   const [user, setUser] = useState<Telegram.InitDataUser | null>(null);
+  const [gamePlayPoints, setGamePlayPoints] = useState(0)
 
   useEffect(() => {
     // Ensure the Telegram Web Apps SDK is ready
@@ -109,6 +111,16 @@ const AnimatedBackground = () => {
     return () => clearInterval(interval);
   }, [rangeValue]);
 
+  useEffect (() => {
+    const fetchUserData = async () => {
+      const getUserData = await axios.post(`${API_URL}/get-user-data`, {user})
+      setGamePlayPoints(getUserData?.data?.userData?.pointsNo)
+    }
+    if (user) {
+      fetchUserData();
+    }
+  }, [user])
+
   const changeColor = () => {
     const randomColor = brightColors[Math.floor(Math.random() * brightColors.length)].code;
     setHelixColor(randomColor);
@@ -126,7 +138,7 @@ const AnimatedBackground = () => {
         <>
           <div className="flex gap-4 items-center justify-center w-full h-[20vh] px-4 py-6">
             <GoldCoinIcon />
-            <h1 className="text-white text-2xl font-bold">245678</h1>
+            <h1 className="text-white text-2xl font-bold">{gamePlayPoints}</h1>
           </div>
           <div className="flex flex-col items-center justify-center w-full h-[50vh] gap-5">
             <h1 className="text-white text-xs font-bold p-2 border border-[#FFF] rounded-full">TAP BELOW TO PLAY</h1>
@@ -139,12 +151,13 @@ const AnimatedBackground = () => {
               } else {
                 setRangeValue(rangeValue + 1)
               }
-              const updatePoints = await axios.post('https://madtapbackend.onrender.com/update-tap-points', {
+              const updatePoints = await axios.post(`${API_URL}/update-tap-points`, {
                 pointsNo,
                 user
               })
 
-              console.log({updatePoints})
+              //console.log({updatePoints})
+              setGamePlayPoints(updatePoints?.data?.userData?.pointsNo)
             }}>
               <FloatingPlusOne helixColor={helixColor} pointsNo={pointsNo} />
             </div>
