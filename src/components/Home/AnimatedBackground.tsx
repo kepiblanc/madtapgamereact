@@ -143,6 +143,8 @@ const AnimatedBackground = () => {
                 pointsNo,
                 user
               })
+
+              console.log({updatePoints})
             }}>
               <FloatingPlusOne helixColor={helixColor} pointsNo={pointsNo} />
             </div>
