@@ -139,7 +139,7 @@ const AnimatedBackground = () => {
               } else {
                 setRangeValue(rangeValue + 1)
               }
-              const updatePoints = await axios.post('http://localhost:4000/update-tap-points', {
+              const updatePoints = await axios.post('https://madtapbackend.onrender.com/update-tap-points', {
                 pointsNo,
                 user
               })
