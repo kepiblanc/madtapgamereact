@@ -70,13 +70,15 @@ let githubUsername, githubRepo, botUsername;
     {
       menu_button: {
         type: "web_app",
-        text: "PLAY MADTAP",
+        text: "PLAY MADTAP DEV",
         web_app: {
           url: url,
         },
       },
     }
   ).catch(exitError);
+
+  console.log({resp});
 
   if (resp.status === 200) {
     console.log(

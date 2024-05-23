@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "configbot": "node configure.js"
+    "configbot": "node configure.js",
+    "buildForBackend": "npm run build && cp -r dist ./backend/",
+    "startWithBackend": "cd backend && node server.js",
+    "devWithBackend": "cd backend && nodemon server.js"
   },
   "dependencies": {
     "@orbs-network/ton-access": "^2.2.2",
@@ -15,9 +18,14 @@
     "@tonconnect/ui-react": "^2.0.2",
     "@twa-dev/sdk": "^6.4.2",
     "autoprefixer": "^10.4.19",
+    "axios": "^1.7.2",
+    "body-parser": "^1.20.2",
     "buffer": "^6.0.3",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "is-mobile": "^3.1.1",
     "ldrs": "^1.0.1",
+    "morgan": "^1.10.0",
     "postcss": "^8.4.38",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

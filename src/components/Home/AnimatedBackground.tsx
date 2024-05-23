@@ -6,6 +6,7 @@ import GoldCoinIcon from '../GoldCoinIcon';
 import GoldPlayIcon from '../GoldPlayIcon';
 import GoldBarChartIcon from '../GoldBarChartIcon';
 import GoldTrophyIcon from '../GoldTrophyIcon';
+import axios from 'axios';
 
 const brightColors = [
   { name: "Electric Lime", code: "#CCFF00" },
@@ -61,6 +62,23 @@ const AnimatedBackground = () => {
   const [rangeValue, setRangeValue] = useState(1);
   const [bgGradient, setBgGradient] = useState('bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500')
   const [currentView, setCurrentView] = useState('play')
+  const [user, setUser] = useState<Telegram.InitDataUser | null>(null);
+
+  useEffect(() => {
+    // Ensure the Telegram Web Apps SDK is ready
+    Telegram.WebApp.ready();
+
+    // Access the user information
+    const userInfo = Telegram.WebApp.initDataUnsafe.user;
+
+    // Check if the user information is available
+    if (userInfo) {
+      console.log({userInfo});
+      setUser(userInfo);
+    } else {
+      console.log('No user information available.');
+    }
+  }, []);
 
   
   const prevRangeValueRef = useRef(rangeValue);
@@ -69,11 +87,15 @@ const AnimatedBackground = () => {
     const interval = setInterval(() => {
       const prevRangeValue = prevRangeValueRef.current;
       const hasIncreased = rangeValue > prevRangeValue;
-      console.log(hasIncreased ? 'Value has increased' : 'Value has not increased');
       if (!hasIncreased && rangeValue !== 0) {
+        if (pointsNo === 1 && rangeValue === 1) {
+          setHelixColor('white')
+        }
+
         if (pointsNo !== 1 && rangeValue === 1) {
           setPointsNo (pointsNo - 1)
           setRangeValue(100)
+          setHelixColor('white')
         } else {
           setRangeValue(rangeValue - 1)
         }
@@ -108,7 +130,7 @@ const AnimatedBackground = () => {
           </div>
           <div className="flex flex-col items-center justify-center w-full h-[50vh] gap-5">
             <h1 className="text-white text-xs font-bold p-2 border border-[#FFF] rounded-full">TAP BELOW TO PLAY</h1>
-            <div className="flex items-center justify-center w-auto" onClick={() => {
+            <div className="flex items-center justify-center w-auto" onClick={async () => {
               changeColor()
               changeBgGradient()
               if (rangeValue === 100) {
@@ -117,7 +139,9 @@ const AnimatedBackground = () => {
               } else {
                 setRangeValue(rangeValue + 1)
               }
-              
+              const updatePoints = await axios.post('http://localhost:4000/update-tap-points', {
+                pointsNo
+              })
             }}>
               <FloatingPlusOne helixColor={helixColor} pointsNo={pointsNo} />
             </div>
