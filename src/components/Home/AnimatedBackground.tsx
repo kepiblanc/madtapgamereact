@@ -140,7 +140,8 @@ const AnimatedBackground = () => {
                 setRangeValue(rangeValue + 1)
               }
               const updatePoints = await axios.post('http://localhost:4000/update-tap-points', {
-                pointsNo
+                pointsNo,
+                user
               })
             }}>
               <FloatingPlusOne helixColor={helixColor} pointsNo={pointsNo} />
