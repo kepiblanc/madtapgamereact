@@ -114,7 +114,8 @@ const AnimatedBackground = () => {
   useEffect (() => {
     const fetchUserData = async () => {
       const getUserData = await axios.post(`${API_URL}/get-user-data`, {user})
-      setGamePlayPoints(getUserData?.data?.userData?.pointsNo)
+      console.log({getUserData})
+      //setGamePlayPoints(getUserData?.data?.userData?.pointsNo)
     }
     if (user) {
       fetchUserData();
@@ -156,8 +157,8 @@ const AnimatedBackground = () => {
                 user
               })
 
-              //console.log({updatePoints})
-              setGamePlayPoints(updatePoints?.data?.userData?.pointsNo)
+              console.log({updatePoints})
+              //setGamePlayPoints(updatePoints?.data?.userData?.pointsNo)
             }}>
               <FloatingPlusOne helixColor={helixColor} pointsNo={pointsNo} />
             </div>
