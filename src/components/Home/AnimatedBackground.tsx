@@ -139,6 +139,7 @@ const AnimatedBackground = () => {
               } else {
                 setRangeValue(rangeValue + 1)
               }
+              console.log('nbe')
               const updatePoints = await axios.post('http://localhost:4000/update-tap-points', {
                 pointsNo,
                 user
