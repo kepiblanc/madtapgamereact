@@ -66,6 +66,18 @@ const AnimatedBackground = () => {
   const [user, setUser] = useState<Telegram.InitDataUser | null>(null);
   const [gamePlayPoints, setGamePlayPoints] = useState(0)
 
+  const handleReferral = async (referralCode: any) => {
+    try {
+      const response = await axios.post('https://madtapbackend.onrender.com/referral', {
+        referralCode,
+        user
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   useEffect(() => {
     // Ensure the Telegram Web Apps SDK is ready
     Telegram.WebApp.ready();
@@ -75,7 +87,7 @@ const AnimatedBackground = () => {
 
     // Check if the user information is available
     if (userInfo) {
-      console.log({userInfo});
+      console.log({userInfo, url: window.location.href});
       setUser(userInfo);
     } else {
       console.log('No user information available.');
