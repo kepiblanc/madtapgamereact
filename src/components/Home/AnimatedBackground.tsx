@@ -157,7 +157,6 @@ const AnimatedBackground = () => {
                 user
               })
 
-              //console.log({updatePoints})
               setGamePlayPoints(updatePoints?.data?.userData?.pointsNo)
             }}>
               <FloatingPlusOne helixColor={helixColor} pointsNo={pointsNo} />

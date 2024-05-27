@@ -4,6 +4,7 @@ import '../floatAnimation.css';
 //import { helix } from 'ldrs'
 //helix.register()
 import { quantum } from 'ldrs'
+import sapiensRunning from '../assets/sapiens.svg';
 
 quantum.register()
 
@@ -46,12 +47,13 @@ const FloatingPlusOne:FC<Props> = ({helixColor, pointsNo}) => {
         </span>
       ))}
       <div className="flex items-center justify-center">
-        <l-quantum
+        <img src={sapiensRunning} alt="" width={300} />
+        {/*<l-quantum
           size={'150'}
           speed="5" 
           color={helixColor}
         ></l-quantum>
-        {/*<l-helix
+        <l-helix
             size={'150'}
             speed="2.5" 
             color={helixColor}
