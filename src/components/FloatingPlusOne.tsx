@@ -47,7 +47,7 @@ const FloatingPlusOne:FC<Props> = ({helixColor, pointsNo}) => {
         </span>
       ))}
       <div className="flex items-center justify-center">
-        <img src={sapiensRunning} alt="" className="mx-auto w-[50%] h-[40vh]" />
+        <img src={sapiensRunning} alt="" className="mx-auto w-[50%] h-[30vh]" />
         {/*<l-quantum
           size={'150'}
           speed="5" 
