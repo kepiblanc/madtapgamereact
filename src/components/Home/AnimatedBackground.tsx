@@ -65,18 +65,8 @@ const AnimatedBackground = () => {
   const [currentView, setCurrentView] = useState('play')
   const [user, setUser] = useState<Telegram.InitDataUser | null>(null);
   const [gamePlayPoints, setGamePlayPoints] = useState(0)
-
-  const handleReferral = async (referralCode: any) => {
-    try {
-      const response = await axios.post('https://madtapbackend.onrender.com/referral', {
-        referralCode,
-        user
-      });
-      console.log(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const [referralCode, setReferralCode] = useState('Not Available');
+  const [referralPoints, setReferralPoints] = useState(0)
 
   useEffect(() => {
     // Ensure the Telegram Web Apps SDK is ready
@@ -128,6 +118,8 @@ const AnimatedBackground = () => {
       const getUserData = await axios.post(`${API_URL}/get-user-data`, {user})
       //console.log({getUserData})
       setGamePlayPoints(getUserData?.data?.userData?.pointsNo)
+      if (getUserData?.data?.userData?.referralCode) setReferralCode(getUserData?.data?.userData?.referralCode)
+      if (getUserData?.data?.userData?.referralPoints) setReferralPoints(getUserData?.data?.userData?.referralPoints)
     }
     if (user) {
       fetchUserData();
@@ -182,9 +174,19 @@ const AnimatedBackground = () => {
 
       {
         currentView === 'referrals' &&
-        <>
+        <div className="flex flex-col h-[70vh] justify-center items-center">
           <p className="flex items-center justify-center text-white">Referrals</p>
-        </>
+          <div className="flex flex-col w-[90%] sm:w-[70%] md:w-[50%] mx-auto border border-[#FFF] rounded-md text-[#FFF] gap-4">
+            <div className="flex justify-between border-b border-b-[#FFF] py-3">
+              <p className="font-bold flex justify-center items-center px-4">Referral Code</p>
+              <p className="text-sm flex justify-center items-center px-4">{referralCode}</p>
+            </div>
+            <div className="flex justify-between py-3">
+              <p className="font-bold flex justify-center px-4">Total Referrals</p>
+              <p className="text-sm flex justify-center px-4">{referralPoints}</p>
+            </div>
+          </div>
+        </div>
       }
 
       {
