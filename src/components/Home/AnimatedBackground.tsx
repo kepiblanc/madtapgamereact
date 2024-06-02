@@ -177,9 +177,9 @@ const AnimatedBackground = () => {
         <div className="flex flex-col h-[70vh] justify-center items-center">
           <p className="flex items-center justify-center text-white">Referrals</p>
           <div className="flex flex-col w-[90%] sm:w-[70%] md:w-[50%] mx-auto border border-[#FFF] rounded-md text-[#FFF] gap-4">
-            <div className="flex justify-between border-b border-b-[#FFF] py-3">
+            <div className="flex flex-col sm:flex-row sm:justify-between border-b border-b-[#FFF] py-3">
               <p className="font-bold flex justify-center items-center px-4">Referral Code</p>
-              <p className="text-sm flex justify-center items-center px-4">{referralCode}</p>
+              <p className="text-sm flex justify-center items-center px-4">{`https://t.me/mad_tap_bot?start=${referralCode}`}</p>
             </div>
             <div className="flex justify-between py-3">
               <p className="font-bold flex justify-center px-4">Total Referrals</p>
