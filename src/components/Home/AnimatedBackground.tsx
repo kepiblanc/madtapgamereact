@@ -8,6 +8,7 @@ import GoldBarChartIcon from '../GoldBarChartIcon';
 import GoldTrophyIcon from '../GoldTrophyIcon';
 import axios from 'axios';
 import { API_URL } from '../../utils'
+import Leaderboard from '../Leaderboard';
 
 const brightColors = [
   { name: "Electric Lime", code: "#CCFF00" },
@@ -67,6 +68,17 @@ const AnimatedBackground = () => {
   const [gamePlayPoints, setGamePlayPoints] = useState(0)
   const [referralCode, setReferralCode] = useState('Not Available');
   const [referralPoints, setReferralPoints] = useState(0)
+  const [leaderboardData, setLeaderboardData] = useState<any>([])
+
+  const mockLeaderboardData = [
+    { id: 1, name: 'John Doe', points: 28, referrals: 28, total: 22 },
+    { id: 2, name: 'Jane Doe', points: 32, referrals: 32, total: 22 },
+    { id: 3, name: 'Sam Smith', points: 24, referrals: 24, total: 22 },
+    { id: 4, name: 'Sara Connor', points: 29, referrals: 29, total: 22 },
+    { id: 5, name: 'Chris Evans', points: 35, referrals: 35, total: 22 },
+    { id: 6, name: 'Mia Wong', points: 30, referrals: 30, total: 22 },
+    // Add more data as needed
+  ];
 
   useEffect(() => {
     // Ensure the Telegram Web Apps SDK is ready
@@ -125,6 +137,25 @@ const AnimatedBackground = () => {
       fetchUserData();
     }
   }, [user])
+
+  useEffect (() => {
+    const fetchLeaderboardData = async () => {
+      const getLeaderboardData = await axios.post(`${API_URL}/leaderboard-data`, {})
+
+      const sortedData = getLeaderboardData.data.leaderboardData.map((board: any) => {
+        return {
+          id: board.user.id, 
+          name: board.user.username ? board.user.username : board.user.first_name, 
+          points: board.pointsNo, 
+          referrals: board.referralPoints, 
+          total: board.totalPoints
+        }
+      })
+
+      setLeaderboardData(sortedData)
+    }
+    fetchLeaderboardData();
+  }, [])
 
   const changeColor = () => {
     const randomColor = brightColors[Math.floor(Math.random() * brightColors.length)].code;
@@ -191,9 +222,10 @@ const AnimatedBackground = () => {
 
       {
         currentView === 'leaderboard' &&
-        <>
+        <div className="flex flex-col h-[70vh] justify-center items-center">
           <p className="flex items-center justify-center text-white">Leaderboard</p>
-        </>
+          <Leaderboard data={leaderboardData} rowsPerPage={5} />
+        </div>
       }
       <div className="w-[90%] mx-auto h-[12vh] border border-[#FFF] rounded-full">
         <div className="flex items-center justify-center h-full">
