@@ -169,7 +169,7 @@ const AnimatedBackground = () => {
   };
 
   return (
-    <div className={`w-full h-screen ${bgGradient} animate-moveBackground bg-[length:200%_200%] bg-cover bg-center`}>
+    <div className={`w-full min-h-screen ${bgGradient} animate-moveBackground bg-[length:200%_200%] bg-cover bg-center`}>
       {
         currentView === 'play' &&
         <>
