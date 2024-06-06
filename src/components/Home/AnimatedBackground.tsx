@@ -225,7 +225,7 @@ const AnimatedBackground = () => {
         currentView === 'leaderboard' &&
         <div className="flex flex-col h-[70vh] justify-center items-center">
           <p className="flex items-center justify-center text-white">Leaderboard</p>
-          <Leaderboard data={leaderboardData} rowsPerPage={5} />
+          <Leaderboard data={leaderboardData} rowsPerPage={3} />
         </div>
       }
       <div className="w-[90%] mx-auto h-[12vh] border border-[#FFF] rounded-full">
