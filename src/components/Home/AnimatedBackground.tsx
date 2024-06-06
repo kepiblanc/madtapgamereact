@@ -181,7 +181,7 @@ const AnimatedBackground = () => {
             <h1 className="text-white text-xs font-bold p-2 border border-[#FFF] rounded-full">TAP THE RUNNER ICON BELOW TO PLAY</h1>
             <div className="flex items-center justify-center w-auto" onClick={async () => {
               changeColor()
-              changeBgGradient()
+              //changeBgGradient()
               if (rangeValue === 100) {
                 setRangeValue(0)
                 setPointsNo(pointsNo + 1)
@@ -230,7 +230,7 @@ const AnimatedBackground = () => {
       }
       <div className="w-full mx-auto h-[12vh] rounded-full absolute bottom-0">
         <div className="flex items-center justify-center h-full w-full sm:w-[90%] mx-auto">
-          <div className="flex flex-col gap-1 items-center justify-center cursor-pointer text-xs border border-[#FFF] px-1 h-full text-[#FFF] w-1/3 rounded-tl-full" onClick={() => {
+          <div className="flex flex-col gap-1 items-center justify-center cursor-pointer text-xs border border-[#FFF] px-1 h-full text-[#FFF] w-1/3 rounded-tl-lg" onClick={() => {
             setCurrentView('play')
           }}>
             <GoldPlayIcon />
@@ -242,7 +242,7 @@ const AnimatedBackground = () => {
             <GoldBarChartIcon />
             <span>REFERRALS</span>
           </div>
-          <div className="flex flex-col gap-1 items-center justify-center cursor-pointer text-xs border border-[#FFF] px-1 h-full text-[#FFF] w-1/3 rounded-tr-full" onClick={() => {
+          <div className="flex flex-col gap-1 items-center justify-center cursor-pointer text-xs border border-[#FFF] px-1 h-full text-[#FFF] w-1/3 rounded-tr-lg" onClick={() => {
             setCurrentView('leaderboard')
           }}>
             <GoldTrophyIcon />
