@@ -9,6 +9,7 @@ import GoldTrophyIcon from '../GoldTrophyIcon';
 import axios from 'axios';
 import { API_URL } from '../../utils'
 import Leaderboard from '../Leaderboard';
+import Keypad from '../Keypad';
 
 const brightColors = [
   { name: "Electric Lime", code: "#CCFF00" },
@@ -172,12 +173,12 @@ const AnimatedBackground = () => {
       {
         currentView === 'play' &&
         <>
-          <div className="flex gap-4 items-center justify-center w-full h-[20vh] px-4 py-6">
+          <div className="flex gap-4 items-center justify-center w-full px-4 py-6">
             <GoldCoinIcon />
             <h1 className="text-white text-2xl font-bold">{gamePlayPoints}</h1>
           </div>
-          <div className="flex flex-col items-center justify-center w-full h-[50vh] gap-3">
-            <h1 className="text-white text-xs font-bold p-2 border border-[#FFF] rounded-full">TAP BELOW TO PLAY</h1>
+          <div className="flex flex-col items-center justify-center w-full gap-3">
+            <h1 className="text-white text-xs font-bold p-2 border border-[#FFF] rounded-full">TAP THE RUNNER ICON BELOW TO PLAY</h1>
             <div className="flex items-center justify-center w-auto" onClick={async () => {
               changeColor()
               changeBgGradient()
@@ -194,7 +195,7 @@ const AnimatedBackground = () => {
 
               setGamePlayPoints(updatePoints?.data?.userData?.pointsNo)
             }}>
-              <FloatingPlusOne helixColor={helixColor} pointsNo={pointsNo} />
+              <Keypad helixColor={helixColor} pointsNo={pointsNo} /> 
             </div>
             <div className="flex items-center justify-center w-full">
               <RangeInput rangeValue={rangeValue} />
