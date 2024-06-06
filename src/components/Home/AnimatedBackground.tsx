@@ -228,9 +228,9 @@ const AnimatedBackground = () => {
           <Leaderboard data={leaderboardData} rowsPerPage={3} />
         </div>
       }
-      <div className="w-[90%] mx-auto h-[12vh] border border-[#FFF] rounded-full">
-        <div className="flex items-center justify-center h-full">
-          <div className="flex flex-col gap-1 items-center justify-center cursor-pointer text-xs border border-[#FFF] px-1 h-full text-[#FFF] w-1/3 rounded-l-full" onClick={() => {
+      <div className="w-full mx-auto h-[12vh] rounded-full absolute bottom-0">
+        <div className="flex items-center justify-center h-full w-full sm:w-[90%] mx-auto">
+          <div className="flex flex-col gap-1 items-center justify-center cursor-pointer text-xs border border-[#FFF] px-1 h-full text-[#FFF] w-1/3 rounded-tl-full" onClick={() => {
             setCurrentView('play')
           }}>
             <GoldPlayIcon />
@@ -242,7 +242,7 @@ const AnimatedBackground = () => {
             <GoldBarChartIcon />
             <span>REFERRALS</span>
           </div>
-          <div className="flex flex-col gap-1 items-center justify-center cursor-pointer text-xs border border-[#FFF] px-1 h-full text-[#FFF] w-1/3 rounded-r-full" onClick={() => {
+          <div className="flex flex-col gap-1 items-center justify-center cursor-pointer text-xs border border-[#FFF] px-1 h-full text-[#FFF] w-1/3 rounded-tr-full" onClick={() => {
             setCurrentView('leaderboard')
           }}>
             <GoldTrophyIcon />

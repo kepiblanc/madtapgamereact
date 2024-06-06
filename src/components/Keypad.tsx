@@ -19,14 +19,14 @@ const Keypad:FC<any> = ({helixColor, pointsNo}) => {
   const keypadButtons = Array.from({ length: 9 }, (_, i) => (
     <div
       key={i}
-      className="w-1/4 h-16 flex items-center justify-center bg-gray-200 border rounded m-1"
+      className="w-[25%] h-16 flex items-center justify-center bg-gray-200 border rounded m-1"
     >
       {i === randomIndex ? placeholderElement : i + 1}
     </div>
   ));
 
   return (
-    <div className="flex flex-wrap justify-center mt-10 w-[80%] mx-auto">
+    <div className="flex flex-wrap justify-center mt-10 w-full">
       {keypadButtons}
     </div>
   );
