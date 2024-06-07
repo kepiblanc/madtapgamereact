@@ -179,7 +179,7 @@ const AnimatedBackground = () => {
           </div>
           <div className="flex flex-col items-center justify-center w-full gap-3 h-auto overflow-y-scroll">
             <h1 className="text-white text-xs font-bold p-2 border border-[#FFF] rounded-full">TAP THE RUNNER ICON BELOW TO PLAY</h1>
-            <div className="flex items-center justify-center w-auto" onClick={async () => {
+            <div className="flex items-center justify-center w-full sm:w-[60vw] md:w-[50vw] lg:w-[40vw]" onClick={async () => {
               changeColor()
               //changeBgGradient()
               if (rangeValue === 100) {
