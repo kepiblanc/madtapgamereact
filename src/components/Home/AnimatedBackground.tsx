@@ -177,7 +177,7 @@ const AnimatedBackground = () => {
             <GoldCoinIcon />
             <h1 className="text-white text-2xl font-bold">{gamePlayPoints}</h1>
           </div>
-          <div className="flex flex-col items-center justify-center w-full gap-3">
+          <div className="flex flex-col items-center justify-center w-full gap-3 h-auto overflow-y-scroll">
             <h1 className="text-white text-xs font-bold p-2 border border-[#FFF] rounded-full">TAP THE RUNNER ICON BELOW TO PLAY</h1>
             <div className="flex items-center justify-center w-auto" onClick={async () => {
               changeColor()
