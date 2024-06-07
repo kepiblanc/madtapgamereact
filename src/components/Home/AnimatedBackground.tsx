@@ -228,7 +228,7 @@ const AnimatedBackground = () => {
           <Leaderboard data={leaderboardData} rowsPerPage={3} />
         </div>
       }
-      <div className="w-full mx-auto h-[12vh] rounded-full absolute bottom-0">
+      <div className="w-full mx-auto h-[12vh] rounded-full absolute bottom-0 fixed">
         <div className="flex items-center justify-center h-full w-full sm:w-[90%] mx-auto">
           <div className="flex flex-col gap-1 items-center justify-center cursor-pointer text-xs border border-[#FFF] px-1 h-full text-[#FFF] w-1/3 rounded-tl-lg" onClick={() => {
             setCurrentView('play')
