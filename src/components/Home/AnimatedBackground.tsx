@@ -1,23 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import './animations.css';
-import FloatingPlusOne from '../FloatingPlusOne';
-import RangeInput from '../RangeInput/RangeInput';
-import GoldCoinIcon from '../GoldCoinIcon';
-import GoldPlayIcon from '../GoldPlayIcon';
-import GoldBarChartIcon from '../GoldBarChartIcon';
-import GoldTrophyIcon from '../GoldTrophyIcon';
 import axios from 'axios';
 import { API_URL } from '../../utils'
 import Leaderboard from '../Leaderboard';
-import Keypad from '../Keypad';
 import madTapIsto from '../../assets/madtapisto.png';
 import omniLogo from '../../assets/omniLogo.svg';
 import centralCee from '../../assets/centralCeely.png'
-import ChevronDown from '../ChevronDown';
 import WheelSpin from '../WheelSpin/WheelSpin';
-import badge from '../../assets/Badge.png';
-import referral from '../../assets/Referral.png';
-import task from '../../assets/Task.png';
+import badge from '../../assets/badge.png';
+import referral from '../../assets/referral.png';
+import task from '../../assets/task.png';
 
 const brightColors = [
   { name: "Electric Lime", code: "#CCFF00" },
