@@ -17,7 +17,6 @@ const RangeInput:FC<Props> = ({ rangeValue }) => {
           max="100"
           value={rangeValue}
         />
-        <span className="text-[#FFF]">{rangeValue}</span>
       </div>
     </div>
   );

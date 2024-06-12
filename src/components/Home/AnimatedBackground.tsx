@@ -10,6 +10,14 @@ import axios from 'axios';
 import { API_URL } from '../../utils'
 import Leaderboard from '../Leaderboard';
 import Keypad from '../Keypad';
+import madTapIsto from '../../assets/madtapisto.png';
+import omniLogo from '../../assets/omniLogo.svg';
+import centralCee from '../../assets/centralCeely.png'
+import ChevronDown from '../ChevronDown';
+import WheelSpin from '../WheelSpin/WheelSpin';
+import badge from '../../assets/Badge.png';
+import referral from '../../assets/Referral.png';
+import task from '../../assets/Task.png';
 
 const brightColors = [
   { name: "Electric Lime", code: "#CCFF00" },
@@ -62,7 +70,7 @@ const gradients = [
 const AnimatedBackground = () => {
   const [helixColor, setHelixColor] = useState('white');
   const [pointsNo, setPointsNo] = useState(1);
-  const [rangeValue, setRangeValue] = useState(1);
+  const [rangeValue, setRangeValue] = useState(66);
   const [bgGradient, setBgGradient] = useState('bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500')
   const [currentView, setCurrentView] = useState('play')
   const [user, setUser] = useState<Telegram.InitDataUser | null>(null);
@@ -70,6 +78,8 @@ const AnimatedBackground = () => {
   const [referralCode, setReferralCode] = useState('Not Available');
   const [referralPoints, setReferralPoints] = useState(0)
   const [leaderboardData, setLeaderboardData] = useState<any>([])
+  const [startPlay, setStartPlay] = useState(false);
+  const [playerLevel, setPlayerLevel] = useState('Rookie');
 
   const mockLeaderboardData = [
     { id: 1, name: 'John Doe', points: 28, referrals: 28, total: 22 },
@@ -94,6 +104,14 @@ const AnimatedBackground = () => {
       setUser(userInfo);
     } else {
       console.log('No user information available.');
+      setUser({
+        allows_write_to_pm: true,
+        first_name: "Qanda",
+        id: 1354055384,
+        language_code: "en",
+        last_name: "Sensei",
+        username: "qandasensei"
+      })
     }
   }, []);
 
@@ -169,87 +187,101 @@ const AnimatedBackground = () => {
   };
 
   return (
-    <div className={`w-full min-h-screen ${bgGradient} animate-moveBackground bg-[length:200%_200%] bg-cover bg-center`}>
+    <div className={`w-full min-h-screen animate-moveBackground bg-cover bg-center`} style={{backgroundImage: `url('${madTapIsto}')`}}>
       {
-        currentView === 'play' &&
-        <>
-          <div className="flex gap-4 items-center justify-center w-full px-4 py-6">
-            <GoldCoinIcon />
-            <h1 className="text-white text-2xl font-bold">{gamePlayPoints}</h1>
+        !startPlay ?
+        <div className="flex flex-col justify-center items-center gap-4">
+          <div className="py-6">
+            <img src={omniLogo} alt="" className="mx-auto w-full" />
           </div>
-          <div className="flex flex-col items-center justify-center w-full gap-3 h-auto overflow-y-scroll">
-            <h1 className="text-white text-xs font-bold p-2 border border-[#FFF] rounded-full">TAP THE RUNNER ICON BELOW TO PLAY</h1>
-            <div className="flex items-center justify-center w-full sm:w-[60vw] md:w-[50vw] lg:w-[40vw]" onClick={async () => {
-              changeColor()
-              //changeBgGradient()
-              if (rangeValue === 100) {
-                setRangeValue(0)
-                setPointsNo(pointsNo + 1)
-              } else {
-                setRangeValue(rangeValue + 1)
-              }
-              const updatePoints = await axios.post(`${API_URL}/update-tap-points`, {
-                pointsNo,
-                user
-              })
+          <div>
+            <img src={centralCee} alt="" className="mx-auto w-full h-[40vh]" />
+          </div>
+          <button className="py-2 px-6 rounded-md font-neuropol text-[#FFF] border border-[#FFF]" onClick={() => setStartPlay(!startPlay)}>
+            Play
+          </button>
+          <p className="font-neuropol text-[#FFF] flex justify-center items-center mx-auto w-auto text-center">Dive in to earn daily gold points</p>
+        </div> :
+        <>
+          {
+            currentView === 'play' &&
+            <div className="flex flex-col h-[80vh] gap-3 overflow-y-scroll">
+              <WheelSpin user={user} playerLevel={playerLevel} gamePlayPoints={gamePlayPoints} handleGamePointsUpdate={(e: any) => setGamePlayPoints(e)} />
+              {/*<div className="flex flex-col items-center justify-center w-full gap-3 h-auto overflow-y-scroll">
+                <h1 className="text-white text-xs font-bold p-2 border border-[#FFF] rounded-full">TAP THE RUNNER ICON BELOW TO PLAY</h1>
+                <div className="flex items-center justify-center w-full sm:w-[60vw] md:w-[50vw] lg:w-[40vw]" onClick={async () => {
+                  changeColor()
+                  //changeBgGradient()
+                  if (rangeValue === 100) {
+                    setRangeValue(0)
+                    setPointsNo(pointsNo + 1)
+                  } else {
+                    setRangeValue(rangeValue + 1)
+                  }
+                  const updatePoints = await axios.post(`${API_URL}/update-tap-points`, {
+                    pointsNo,
+                    user
+                  })
 
-              setGamePlayPoints(updatePoints?.data?.userData?.pointsNo)
-            }}>
-              <Keypad helixColor={helixColor} pointsNo={pointsNo} /> 
+                  setGamePlayPoints(updatePoints?.data?.userData?.pointsNo)
+                }}>
+                  <Keypad helixColor={helixColor} pointsNo={pointsNo} /> 
+                </div>
+                <div className="flex items-center justify-center w-full">
+                  <RangeInput rangeValue={rangeValue} />
+                </div>
+              </div>*/}
             </div>
-            <div className="flex items-center justify-center w-full">
-              <RangeInput rangeValue={rangeValue} />
+          }
+
+          {
+            currentView === 'referrals' &&
+            <div className="flex flex-col h-[70vh] justify-center items-center">
+              <p className="flex items-center justify-center text-white">Referrals</p>
+              <div className="flex flex-col w-[90%] sm:w-[70%] md:w-[50%] mx-auto border border-[#FFF] rounded-md text-[#FFF] gap-4">
+                <div className="flex flex-col sm:flex-row sm:justify-between border-b border-b-[#FFF] py-3">
+                  <p className="font-bold flex justify-center items-center px-4">Referral Code</p>
+                  <p className="text-sm flex justify-center items-center px-4">{`https://t.me/mad_tap_bot?start=${referralCode}`}</p>
+                </div>
+                <div className="flex justify-between py-3">
+                  <p className="font-bold flex justify-center px-4">Total Referrals</p>
+                  <p className="text-sm flex justify-center px-4">{referralPoints}</p>
+                </div>
+              </div>
+            </div>
+          }
+
+          {
+            currentView === 'leaderboard' &&
+            <div className="flex flex-col h-[70vh] justify-center items-center">
+              <p className="flex items-center justify-center text-white">Leaderboard</p>
+              <Leaderboard data={leaderboardData} rowsPerPage={3} />
+            </div>
+          }
+          <div className="w-full mx-auto h-[12vh] absolute fixed bottom-0">
+            <div className="flex items-center justify-center h-full w-[90%] mx-auto rounded-tl-lg rounded-tr-lg font-neuropol" style={{backgroundColor: 'rgba(255, 255, 255, 0.8)'}}>
+              <div className="flex flex-col gap-1 items-center justify-center cursor-pointer text-xs border-r-[#FFF] px-1 h-full text-[#FFF] w-1/3" onClick={() => {
+                setCurrentView('play')
+              }}>
+                <img src={badge} alt="Badge" className="w-[5vh]" />
+                <span>Stats</span>
+              </div>
+              <div className="flex flex-col gap-1 items-center justify-center cursor-pointer text-xs px-1 h-full text-[#FFF] w-1/3" onClick={() => {
+                setCurrentView('referrals')
+              }}>
+                <img src={referral} alt="Referral" className="w-[5vh]" />
+                <span>Invite</span>
+              </div>
+              <div className="flex flex-col gap-1 items-center justify-center cursor-pointer text-xs px-1 h-full border-l-[#FFF] text-[#FFF] w-1/3" onClick={() => {
+                setCurrentView('leaderboard')
+              }}>
+                <img src={task} alt="Task" className="w-[5vh]" />
+                <span>Earn</span>
+              </div>
             </div>
           </div>
         </>
       }
-
-      {
-        currentView === 'referrals' &&
-        <div className="flex flex-col h-[70vh] justify-center items-center">
-          <p className="flex items-center justify-center text-white">Referrals</p>
-          <div className="flex flex-col w-[90%] sm:w-[70%] md:w-[50%] mx-auto border border-[#FFF] rounded-md text-[#FFF] gap-4">
-            <div className="flex flex-col sm:flex-row sm:justify-between border-b border-b-[#FFF] py-3">
-              <p className="font-bold flex justify-center items-center px-4">Referral Code</p>
-              <p className="text-sm flex justify-center items-center px-4">{`https://t.me/mad_tap_bot?start=${referralCode}`}</p>
-            </div>
-            <div className="flex justify-between py-3">
-              <p className="font-bold flex justify-center px-4">Total Referrals</p>
-              <p className="text-sm flex justify-center px-4">{referralPoints}</p>
-            </div>
-          </div>
-        </div>
-      }
-
-      {
-        currentView === 'leaderboard' &&
-        <div className="flex flex-col h-[70vh] justify-center items-center">
-          <p className="flex items-center justify-center text-white">Leaderboard</p>
-          <Leaderboard data={leaderboardData} rowsPerPage={3} />
-        </div>
-      }
-      <div className="w-full mx-auto h-[12vh] rounded-full absolute bottom-0 fixed">
-        <div className="flex items-center justify-center h-full w-full sm:w-[90%] mx-auto">
-          <div className="flex flex-col gap-1 items-center justify-center cursor-pointer text-xs border border-[#FFF] px-1 h-full text-[#FFF] w-1/3 rounded-tl-lg" onClick={() => {
-            setCurrentView('play')
-          }}>
-            <GoldPlayIcon />
-            <span>PLAY</span>
-          </div>
-          <div className="flex flex-col gap-1 items-center justify-center cursor-pointer text-xs border border-[#FFF] px-1 h-full text-[#FFF] w-1/3" onClick={() => {
-            setCurrentView('referrals')
-          }}>
-            <GoldBarChartIcon />
-            <span>REFERRALS</span>
-          </div>
-          <div className="flex flex-col gap-1 items-center justify-center cursor-pointer text-xs border border-[#FFF] px-1 h-full text-[#FFF] w-1/3 rounded-tr-lg" onClick={() => {
-            setCurrentView('leaderboard')
-          }}>
-            <GoldTrophyIcon />
-            <span>LEADERBOARD</span>
-          </div>
-        </div>
-      </div>
     </div>
   );
 };

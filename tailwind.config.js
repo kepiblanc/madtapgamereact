@@ -7,7 +7,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        body: ['Sofia Sans Semi Condensed,sans-serif;']
+        neuropol: ['NeuropolX', 'sans-serif'], 
       }
     },
   },

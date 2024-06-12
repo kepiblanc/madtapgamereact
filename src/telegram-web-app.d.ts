@@ -1,5 +1,6 @@
 declare namespace Telegram {
     interface InitDataUser {
+      allows_write_to_pm: boolean,
       id: number;
       first_name: string;
       last_name: string;

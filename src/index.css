@@ -10,6 +10,13 @@
     src: url('https://fonts.googleapis.com/css2?family=Poppins:wght@100&family=Sofia+Sans+Semi+Condensed:wght@1;100;200;300;400;500;600;700;800&display=swap');
 }
 
+@font-face {
+    font-family: 'NeuropolX';
+    src: url('./assets/fonts/neuropol-x-rg.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
 body {
-    font-family: 'Sofia Sans', sans-serif !important;
+    font-family: 'NeuropolX, Regular', sans-serif !important;
 }
