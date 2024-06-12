@@ -129,7 +129,7 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
         }
         <div className="flex gap-4 items-center justify-center w-full">
             <GoldCoinIcon />
-            <h1 className="font-neuropol text-white text-sm font-bold">{gamePlayPoints}</h1>
+            <h1 className="font-neuropol text-white text-xs font-bold">{gamePlayPoints} Gold</h1>
         </div>
         <div>
             {floaters.map((floater: any) => (
