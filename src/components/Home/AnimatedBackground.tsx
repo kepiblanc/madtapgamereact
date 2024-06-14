@@ -5,7 +5,7 @@ import { API_URL } from '../../utils'
 import Leaderboard from '../Leaderboard';
 import madTapIsto from '../../assets/madtapisto.png';
 import omniLogo from '../../assets/omniLogo.svg';
-import centralCee from '../../assets/centralCeely.png'
+import centralCee from '../../assets/centralCee.png'
 import WheelSpin from '../WheelSpin/WheelSpin';
 import badge from '../../assets/badge.png';
 import referral from '../../assets/referral.png';
@@ -14,6 +14,7 @@ import ReferralPopup from '../ReferralPopup';
 import { toast } from 'react-toastify';
 import GoldCoinIcon from '../GoldCoinIcon';
 import RangeInput from '../RangeInput/RangeInput';
+import TimesIconRed from '../TimesIconRed';
 
 const brightColors = [
   { name: "Electric Lime", code: "#CCFF00" },
@@ -68,7 +69,7 @@ const AnimatedBackground = () => {
   const [pointsNo, setPointsNo] = useState(1);
   const [rangeValue, setRangeValue] = useState(66);
   const [bgGradient, setBgGradient] = useState('bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500')
-  const [currentView, setCurrentView] = useState('play')
+  const [currentView, setCurrentView] = useState('')
   const [user, setUser] = useState<Telegram.InitDataUser | null>(null);
   const [gamePlayPoints, setGamePlayPoints] = useState(0)
   const [referralCode, setReferralCode] = useState('Not Available');
@@ -76,6 +77,7 @@ const AnimatedBackground = () => {
   const [leaderboardData, setLeaderboardData] = useState<any>([])
   const [startPlay, setStartPlay] = useState(false);
   const [playerLevel, setPlayerLevel] = useState('Rookie');
+  const [referralRewardDeets, setReferralRewardDeets] = useState<any>();
 
   // clipboard.js
   function copyToClipboard(value: any) {
@@ -182,10 +184,11 @@ const AnimatedBackground = () => {
   useEffect (() => {
     const fetchUserData = async () => {
       const getUserData = await axios.post(`${API_URL}/get-user-data`, {user})
-      //console.log({getUserData})
+      console.log({getUserData})
       setGamePlayPoints(getUserData?.data?.userData?.pointsNo)
       if (getUserData?.data?.userData?.referralCode) setReferralCode(getUserData?.data?.userData?.referralCode)
       if (getUserData?.data?.userData?.referralPoints) setReferralPoints(getUserData?.data?.userData?.referralPoints)
+      if (getUserData?.data?.userData?.referralRewardDeets) setReferralRewardDeets(getUserData?.data?.userData?.referralRewardDeets)
     }
     if (user) {
       fetchUserData();
@@ -230,7 +233,7 @@ const AnimatedBackground = () => {
             <img src={omniLogo} alt="" className="mx-auto w-full" />
           </div>
           <div>
-            <img src={centralCee} alt="" className="mx-auto w-full h-[40vh]" />
+            <img src={centralCee} alt="" className="mx-auto w-full h-[50vh]" />
           </div>
           <button className="py-2 px-6 rounded-md font-neuropol text-[#FFF] border border-[#FFF]" onClick={() => setStartPlay(!startPlay)}>
             Play
@@ -238,91 +241,74 @@ const AnimatedBackground = () => {
           <p className="font-neuropol text-[#FFF] flex justify-center items-center mx-auto w-auto text-center">Dive in to earn daily gold points</p>
         </div> :
         <>
-          {
-            currentView === 'play' &&
-            <div className="flex flex-col h-[80vh] gap-3 overflow-y-scroll">
-              <WheelSpin user={user} playerLevel={playerLevel} gamePlayPoints={gamePlayPoints} handleGamePointsUpdate={(e: any) => setGamePlayPoints(e)} />
-            </div>
-          }
+          
+          <div className="flex flex-col h-[80vh] gap-3 overflow-y-scroll">
+            <WheelSpin user={user} playerLevel={playerLevel} gamePlayPoints={gamePlayPoints} handleGamePointsUpdate={(e: any) => setGamePlayPoints(e)} />
+          </div>
 
           <div className="w-full mx-auto h-auto py-3 absolute bottom-0 fixed">
             <div className="flex flex-col items-center justify-center h-auto w-[90%] mx-auto rounded-tl-lg rounded-tr-lg font-neuropol py-3" style={{backgroundColor: 'rgba(255, 255, 255, 0.8)'}}>
+              <div className="flex w-full justify-end">
+                <div className="w-auto cursor-pointer pr-6" onClick={() => setCurrentView('')}>
+                  <TimesIconRed />
+                </div>
+              </div>
+              {
+                currentView === 'stats' &&
+                <div className="flex flex-col h-[50vh] overflow-y-scroll w-full">
+                  <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3">
+                    <p className="flex items-center justify-center text-white w-full font-bold">Stats</p>
+                  </div>
+                  <p>Leaderboard</p>
+                </div>
+              }
               {
                 currentView === 'referrals' &&
-                <div className="flex flex-col h-[70vh] overflow-y-scroll justify-center items-center w-full">
+                <div className="flex flex-col h-[50vh] overflow-y-scroll w-full">
                   <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3">
                     <div className="w-[40%]">
                     <button className="font-neuropol py-2 text-[#000] rounded text-xs w-full" style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} onClick={() => {copyToClipboard(`https://t.me/mad_tap_bot?start=${referralCode}`)}}>Copy Link</button>
                     </div>
-                    <p className="flex items-center justify-start text-white w-[60%]">Invite</p>
+                    <p className="flex items-center justify-start text-white w-[60%] font-bold">Invite</p>
                   </div>
                   
-                  <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3 rounded-md p-3" style={{backgroundColor: 'rgba(0, 0, 0, 0.56)'}}>
-                    <div className="w-[20%]">
-                      <img src={referral} alt="Referral" className="w-[5vh]" />
-                    </div>
-                    <div className="w-[80%] flex flex-col">
-                      <div className="flex justify-between">
-                        <div className="flex flex-col">
-                          <p className="text-white text-xs">5 invites</p>
-                          <div className="flex">
-                            <div className="w-full text-xs text-[#FFF]">50k Gold</div>
-                          </div>
-                        </div>
-                        <div className="flex justify-center items-center">
-                          <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded">Claim</button>
-                        </div>
-                      </div>
-                      <RangeInput rangeValue={referralPoints <= 5 ? (referralPoints/5) * 100 : 100} />
-                    </div>
-                  </div>
+                  
 
-                  <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3 rounded-md p-3" style={{backgroundColor: 'rgba(0, 0, 0, 0.56)'}}>
-                    <div className="w-[20%]">
-                      <img src={referral} alt="Referral" className="w-[5vh]" />
-                    </div>
-                    <div className="w-[80%] flex flex-col">
-                      <div className="flex justify-between">
-                        <div className="flex flex-col">
-                          <p className="text-white text-xs">10 invites</p>
-                          <div className="flex">
-                            <div className="w-full text-xs text-[#FFF]">100k Gold</div>
-                          </div>
+                  {
+                    referralRewardDeets &&
+                    referralRewardDeets.map((deet: any) => (
+                      <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3 rounded-md p-3" style={{backgroundColor: 'rgba(0, 0, 0, 0.56)'}}>
+                        <div className="w-[20%]">
+                          <img src={referral} alt="Referral" className="w-[5vh]" />
                         </div>
-                        <div className="flex justify-center items-center">
-                          <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded">Claim</button>
+                        <div className="w-[80%] flex flex-col">
+                          <div className="flex justify-between">
+                            <div className="flex flex-col">
+                              <p className="text-white text-xs">{deet.claimTreshold} invites</p>
+                              <div className="flex">
+                                <div className="w-full text-xs text-[#E8BC6A]">{deet.claimTreshold * 10000} Gold</div>
+                              </div>
+                            </div>
+                            <div className="flex justify-center items-center">
+                              {
+                                referralPoints >= deet.claimTreshold && !deet.rewardClaimed ?
+                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded">Claim</button> :
+                                <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
+                              }
+                            </div>
+                          </div>
+                          <RangeInput rangeValue={referralPoints <= deet.claimTreshold ? (referralPoints/deet.claimTreshold) * 100 : 100} />
                         </div>
                       </div>
-                      <RangeInput rangeValue={referralPoints <= 10 ? (referralPoints/10) * 100 : 100} />
-                    </div>
-                  </div>
-
-                  <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3 rounded-md p-3" style={{backgroundColor: 'rgba(0, 0, 0, 0.56)'}}>
-                    <div className="w-[20%]">
-                      <img src={referral} alt="Referral" className="w-[5vh]" />
-                    </div>
-                    <div className="w-[80%] flex flex-col">
-                      <div className="flex justify-between">
-                        <div className="flex flex-col">
-                          <p className="text-white text-xs">15 invites</p>
-                          <div className="flex">
-                            <div className="w-full text-xs text-[#FFF]">150k Gold</div>
-                          </div>
-                        </div>
-                        <div className="flex justify-center items-center">
-                          <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded">Claim</button>
-                        </div>
-                      </div>
-                      <RangeInput rangeValue={referralPoints <= 15 ? (referralPoints/15) * 100 : 100} />
-                    </div>
-                  </div>
+                    ))
+                  }
                 </div>
               }
               {
-                currentView === 'leaderboard' &&
-                <div className="flex flex-col h-[70vh] overflow-y-scroll justify-center items-center w-full">
+                currentView === 'earn' &&
+                <div className="flex flex-col h-[50vh] overflow-y-scroll w-full">
                   <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3">
-                    <p className="flex items-center justify-start text-white w-[60%]">Earn</p>
+                    <p className="flex items-center justify-center text-white w-full font-bold">Earn</p>
                   </div>
                   
                   <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3 rounded-md p-3" style={{backgroundColor: 'rgba(0, 0, 0, 0.56)'}}>
@@ -385,7 +371,7 @@ const AnimatedBackground = () => {
               }
               <div className="flex w-full">
                 <div className="flex flex-col gap-1 items-center justify-center cursor-pointer text-xs border-r-[#FFF] px-1 h-full text-[#FFF] w-1/3" onClick={() => {
-                  setCurrentView('play')
+                  setCurrentView('stats')
                 }}>
                   <img src={badge} alt="Badge" className="w-[5vh]" />
                   <span>Stats</span>
@@ -397,7 +383,7 @@ const AnimatedBackground = () => {
                   <span>Invite</span>
                 </div>
                 <div className="flex flex-col gap-1 items-center justify-center cursor-pointer text-xs px-1 h-full border-l-[#FFF] text-[#FFF] w-1/3" onClick={() => {
-                  setCurrentView('leaderboard')
+                  setCurrentView('earn')
                 }}>
                   <img src={task} alt="Task" className="w-[5vh]" />
                   <span>Earn</span>
