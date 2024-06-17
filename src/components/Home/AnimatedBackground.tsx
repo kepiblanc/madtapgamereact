@@ -266,8 +266,8 @@ const AnimatedBackground = () => {
           <div className="py-6">
             <img src={omniLogo} alt="" className="mx-auto w-full" />
           </div>
-          <div>
-            <img src={centralCee} alt="" className="mx-auto w-full h-[50vh]" />
+          <div className="w-full">
+            <img src={'https://i.ibb.co/hX9RT5v/Omni-pillar-game-post-1.jpg'} alt="" className="w-full h-[50vh]" />
           </div>
           <button className="py-2 px-6 rounded-md font-neuropol text-[#FFF] border border-[#FFF]" onClick={() => setStartPlay(!startPlay)}>
             Play
@@ -281,7 +281,7 @@ const AnimatedBackground = () => {
           </div>
 
           <div className="w-full mx-auto h-auto py-3 absolute bottom-0 fixed">
-            <div className="flex flex-col items-center justify-center h-auto w-[90%] mx-auto rounded-tl-lg rounded-tr-lg font-neuropol"  style={{backgroundColor: 'rgba(0, 0, 0, 0.25)'}} /*style={{backgroundColor: 'rgba(255, 255, 255, 0.8)'}}*/>
+            <div className="flex flex-col items-center justify-center h-auto w-[90%] mx-auto rounded-tl-lg rounded-tr-lg font-neuropol"  style={{backgroundColor: 'rgba(0, 0, 0)'}}>
               
               {
                 currentView === 'stats' &&

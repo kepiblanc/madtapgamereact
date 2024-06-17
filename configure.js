@@ -70,7 +70,7 @@ let githubUsername, githubRepo, botUsername;
     {
       menu_button: {
         type: "web_app",
-        text: "PLAY MADTAP",
+        text: "PLAY OmniPillar",
         web_app: {
           url: url,
         },
