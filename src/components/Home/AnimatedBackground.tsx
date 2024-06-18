@@ -4,12 +4,13 @@ import axios from 'axios';
 import { API_URL } from '../../utils'
 import Leaderboard from '../Leaderboard';
 import madTapIsto from '../../assets/madtapisto.png';
+import previewBg from '../../assets/previewBg.jpg';
 import omniLogo from '../../assets/omniLogo.svg';
 import centralCee from '../../assets/centralCee.png'
 import WheelSpin from '../WheelSpin/WheelSpin';
-import badge from '../../assets/badge.png';
-import leftBadge from '../../assets/leftBadge.png';
-import rightBadge from '../../assets/rightBadge.png'
+import badge from '../../assets/badgeOne.png';
+import leftBadge from '../../assets/badgeTwo.png';
+import rightBadge from '../../assets/badgeThree.png'
 import referral from '../../assets/referral.png';
 import task from '../../assets/task.png';
 import ReferralPopup from '../ReferralPopup';
@@ -259,33 +260,32 @@ const AnimatedBackground = () => {
   const milestonesBg = earnView === 'milestones' ? {backgroundColor: 'rgba(0, 0, 0, 0.32)'} : {}
 
   return (
-    <div className={`w-full min-h-screen animate-moveBackground bg-cover bg-center`} style={{backgroundImage: `url('${madTapIsto}')`}}>
+    <div className={`w-full min-h-screen animate-moveBackground bg-cover bg-center`}>
       {
         !startPlay ?
-        <div className="flex flex-col justify-center items-center gap-4">
+        <div className="flex flex-col justify-between items-center gap-4 h-screen" style={{backgroundImage: `url('${previewBg}')`}}>
           <div className="py-6">
-            <img src={omniLogo} alt="" className="mx-auto w-full" />
+            {/*<img src={omniLogo} alt="" className="mx-auto w-full" />*/}
           </div>
-          <div className="w-full">
-            <img src={'https://i.ibb.co/hX9RT5v/Omni-pillar-game-post-1.jpg'} alt="" className="w-full h-[50vh]" />
+          <div className="flex flex-col justify-center items-center w-full py-4">
+            <button className="py-2 px-6 rounded-md font-neuropol text-[#FFF] border border-[#FFF]" onClick={() => setStartPlay(!startPlay)}>
+              Play
+            </button>
+            <p className="font-neuropol text-[#FFF] flex justify-center items-center mx-auto w-auto text-center">Dive in to earn daily gold points</p>
           </div>
-          <button className="py-2 px-6 rounded-md font-neuropol text-[#FFF] border border-[#FFF]" onClick={() => setStartPlay(!startPlay)}>
-            Play
-          </button>
-          <p className="font-neuropol text-[#FFF] flex justify-center items-center mx-auto w-auto text-center">Dive in to earn daily gold points</p>
         </div> :
-        <>
+        <div className="min-h-screen" style={{backgroundImage: `url('${madTapIsto}')`}}>
           
           <div className="flex flex-col h-[80vh] gap-3 overflow-y-scroll">
             <WheelSpin user={user} playerLevel={playerLevel} gamePlayPoints={gamePlayPoints} handleGamePointsUpdate={(e: any) => setGamePlayPoints(e)} />
           </div>
 
           <div className="w-full mx-auto h-auto py-3 absolute bottom-0 fixed">
-            <div className="flex flex-col items-center justify-center h-auto w-[90%] mx-auto rounded-tl-lg rounded-tr-lg font-neuropol"  style={{backgroundColor: 'rgba(0, 0, 0)'}}>
+            <div className="flex flex-col items-center justify-center h-auto w-[90%] mx-auto rounded-tl-lg rounded-tr-lg font-neuropol"  style={{backgroundColor: '#0e02a4'}}>
               
               {
                 currentView === 'stats' &&
-                <div className="flex flex-col h-[60vh] overflow-y-scroll w-full py-3">
+                <div className="flex flex-col h-[60vh] overflow-y-scroll w-full py-3 gap-2">
                   <div className="flex w-full justify-end">
                     <div className="w-auto cursor-pointer pr-6" onClick={() => setCurrentView('')}>
                       <TimesIconRed />
@@ -295,10 +295,10 @@ const AnimatedBackground = () => {
                     <p className="text-center text-white w-full font-bold">Stats</p>
                   </div>
 
-                  <div className="flex w-full mx-auto px-2 h-[20vh]">
-                    <img src={leftBadge} alt="" className="w-1/4" />
-                    <img src={badge} alt="" className="w-1/2" />
-                    <img src={rightBadge} alt="" className="w-1/4" />
+                  <div className="flex w-full mx-auto px-2 h-[10vh] justify-center items-center gap-3">
+                    <img src={leftBadge} alt="" />
+                    <img src={badge} alt="" />
+                    <img src={rightBadge} alt="" />
                   </div>
 
                   <div className="flex flex-col justify-center items-center">
@@ -534,7 +534,7 @@ const AnimatedBackground = () => {
               </div>
             </div>
           </div>
-        </>
+        </div>
       }
     </div>
   );

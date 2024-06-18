@@ -131,7 +131,7 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
             <GoldCoinIcon />
             <h1 className="font-neuropol text-white text-xs font-bold">{gamePlayPoints} Gold</h1>
         </div>
-        <div>
+        {/*<div>
             {floaters.map((floater: any) => (
                 <span
                 key={floater.id}
@@ -145,7 +145,7 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
                 +{pointsNo}
                 </span>
             ))}
-        </div>
+        </div>*/}
         <div className="wheel-container relative">
             <img src={wheelSpinImg} alt="Wheel" ref={wheelRef} className="wheel" />
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 pointer"></div>
