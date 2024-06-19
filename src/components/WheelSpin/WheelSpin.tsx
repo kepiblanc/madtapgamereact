@@ -7,6 +7,12 @@ import { API_URL } from '../../utils';
 import GoldCoinIcon from '../GoldCoinIcon';
 import ChevronDown from '../ChevronDown';
 import { toast } from 'react-toastify';
+import WheelChart from './WheelChart';
+import { Pie } from 'react-chartjs-2';
+import 'chart.js/auto';
+import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
+
+Chart.register(ArcElement, Tooltip, Legend);
 
 const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGamePointsUpdate}) => {
   const wheelRef = useRef<HTMLImageElement>(null);
@@ -49,7 +55,7 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
 
     setIsSpinning(true);
 
-    const spinDuration = Math.floor(Math.random() * 5) + 7; // Random duration between 7 and 12 seconds
+    const spinDuration = 6 //Math.floor(Math.random() * 5) + 7; // Random duration between 7 and 12 seconds
     const rotateDegrees = Math.floor(Math.random() * 360) + 3600; // Random degrees + multiple spins
 
     // Reset the wheel rotation
@@ -67,8 +73,9 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
 
     setTimeout(async () => {
       setIsSpinning(false);
-      const finalRotation = rotateDegrees % 360;
-      const points = getPoints(finalRotation);
+      const finalRotation = 360 - (rotateDegrees % 360);
+      let points = getPoints(finalRotation)
+
       setPointsNo(points);
       runFloaters(e)
       const updatePoints = await axios.post(`${API_URL}/update-tap-points`, {
@@ -81,6 +88,13 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
       })
       console.log(`Points: ${points}`, {updatePoints}, {recordSpin});
       setSpinsLeft(recordSpin?.data?.spinsLeft)
+      if (wheelRef.current) {
+        wheelRef.current.style.transition = 'none';
+        wheelRef.current.style.transform = 'rotate(0deg)';
+  
+        // Force reflow to reset the transition
+        void wheelRef.current.offsetHeight;
+      }
     }, spinDuration * 1000);
   };
 
@@ -95,28 +109,97 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
 
   const getPoints = (rotation: number): number => {
     const sections = [
-      { start: 345, end: 15, points: 3000 },
-      { start: 15, end: 45, points: 50 },
-      { start: 45, end: 75, points: 5000 },
-      { start: 75, end: 105, points: 30000 },
-      { start: 105, end: 135, points: 2000 },
-      { start: 135, end: 165, points: 4000 },
-      { start: 165, end: 195, points: 100 },
-      { start: 195, end: 225, points: 50000 },
-      { start: 225, end: 255, points: 17000 },
-      { start: 255, end: 285, points: 7000 },
-      { start: 285, end: 315, points: 500 },
-      { start: 315, end: 345, points: 10000 },
+      { start: 0, end: 30, points: 3000 },
+      { start: 30, end: 60, points: 50 },
+      { start: 60, end: 90, points: 5000 },
+      { start: 90, end: 120, points: 30000 },
+      { start: 120, end: 150, points: 2000 },
+      { start: 150, end: 180, points: 4000 },
+      { start: 180, end: 210, points: 100 },
+      { start: 210, end: 240, points: 50000 },
+      { start: 240, end: 270, points: 17000 },
+      { start: 270, end: 300, points: 7000 },
+      { start: 300, end: 330, points: 500 },
+      { start: 330, end: 360, points: 10000 }
     ];
 
     for (let section of sections) {
-      if (rotation >= section.start && rotation < section.end) {
+      if (rotation >= section.start && rotation <= section.end) {
         return section.points;
       }
     }
 
     return 0;
   };
+
+  const data = {
+    labels: [
+      '3000', '50', '5000', '30000', 
+      '2000', '4000', '100', '50000',
+      '17000', '7000', '500', '10000'
+    ],
+    datasets: [
+      {
+        label: 'Points Distribution',
+        data: Array(12).fill(1), // Each section has equal weight
+        backgroundColor: [
+          '#960001', '#fffece', '#960001', '#fffece',
+          '#960001', '#fffece', '#960001', '#fffece',
+          '#960001', '#fffece', '#960001', '#fffece',
+        ],
+        hoverBackgroundColor: [
+          '#960001', '#fffece', '#960001', '#fffece',
+          '#960001', '#fffece', '#960001', '#fffece',
+          '#960001', '#fffece', '#960001', '#fffece',
+        ],
+        borderColor: '#d9cd9d', // Custom border color
+        borderWidth: 5, // Custom border width
+      },
+    ],
+  };
+
+  const options: any = {
+    responsive: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+    },
+  };
+
+  const drawTextPlugin = {
+    id: 'drawTextPlugin',
+    afterDraw: (chart: { ctx?: any; data?: any; getDatasetMeta?: any; width?: any; height?: any; }) => {
+      const ctx = chart.ctx;
+      const { width, height } = chart;
+      const { labels } = chart.data;
+      const meta = chart.getDatasetMeta(0);
+      const centerX = width / 2;
+      const centerY = height / 2;
+      const radius = meta.data[0].outerRadius;
+
+      labels.forEach((label: any, i: any) => {
+        const arc = meta.data[i];
+        const startAngle = arc.startAngle;
+        const endAngle = arc.endAngle;
+        const angle = startAngle + (endAngle - startAngle) / 2;
+        const x = centerX + (radius / 1.5) * Math.cos(angle);
+        const y = centerY + (radius / 1.5) * Math.sin(angle);
+
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle + Math.PI / 2);
+        ctx.fillStyle = `${i % 2 === 0 ? '#fffece' : '#960001'}`;
+        ctx.font = 'bold 12px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(label, 0, 0);
+        ctx.restore();
+      });
+    },
+  };
+
+
 
   return (
     <div className="flex flex-col items-center justify-center h-full gap-2">
@@ -131,7 +214,7 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
             <GoldCoinIcon />
             <h1 className="font-neuropol text-white text-xs font-bold">{gamePlayPoints} Gold</h1>
         </div>
-        {/*<div>
+        <div>
             {floaters.map((floater: any) => (
                 <span
                 key={floater.id}
@@ -145,9 +228,12 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
                 +{pointsNo}
                 </span>
             ))}
-        </div>*/}
+        </div>
         <div className="wheel-container relative">
-            <img src={wheelSpinImg} alt="Wheel" ref={wheelRef} className="wheel" />
+            {/*<img src={wheelSpinImg} alt="Wheel" ref={wheelRef} className="wheel" />*/}
+            <div ref={wheelRef} className="wheel">
+              <Pie data={data} options={options} width={250} height={250} plugins={[drawTextPlugin]} />
+            </div>
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 pointer"></div>
         </div>
         <div>

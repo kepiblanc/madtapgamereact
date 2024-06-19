@@ -19,6 +19,7 @@ import GoldCoinIcon from '../GoldCoinIcon';
 import RangeInput from '../RangeInput/RangeInput';
 import TimesIconRed from '../TimesIconRed';
 import ChevronDown from '../ChevronDown';
+import WheelSpinNew from '../WheelSpin/WheelSpinNew';
 
 const brightColors = [
   { name: "Electric Lime", code: "#CCFF00" },
@@ -263,18 +264,18 @@ const AnimatedBackground = () => {
     <div className={`w-full min-h-screen animate-moveBackground bg-cover bg-center`}>
       {
         !startPlay ?
-        <div className="flex flex-col justify-between items-center gap-4 h-screen" style={{backgroundImage: `url('${previewBg}')`}}>
+        <div className="flex flex-col justify-between items-center gap-4 h-screen bg-center bg-cover" style={{backgroundImage: `url('${previewBg}')`}}>
           <div className="py-6">
             {/*<img src={omniLogo} alt="" className="mx-auto w-full" />*/}
           </div>
           <div className="flex flex-col justify-center items-center w-full py-4">
-            <button className="py-2 px-6 rounded-md font-neuropol text-[#FFF] border border-[#FFF]" onClick={() => setStartPlay(!startPlay)}>
-              Play
+            <button className="py-2 px-6 rounded-full font-neuropol bg-[#fffccf] text-[#a76602] font-bold border border-[#FFF] w-[50vh]" onClick={() => setStartPlay(!startPlay)}>
+              PLAY
             </button>
             <p className="font-neuropol text-[#FFF] flex justify-center items-center mx-auto w-auto text-center">Dive in to earn daily gold points</p>
           </div>
         </div> :
-        <div className="min-h-screen" style={{backgroundImage: `url('${madTapIsto}')`}}>
+        <div className="min-h-screen bg-cover bg-center" style={{backgroundImage: `url('${madTapIsto}')`}}>
           
           <div className="flex flex-col h-[80vh] gap-3 overflow-y-scroll">
             <WheelSpin user={user} playerLevel={playerLevel} gamePlayPoints={gamePlayPoints} handleGamePointsUpdate={(e: any) => setGamePlayPoints(e)} />
@@ -282,7 +283,6 @@ const AnimatedBackground = () => {
 
           <div className="w-full mx-auto h-auto py-3 absolute bottom-0 fixed">
             <div className="flex flex-col items-center justify-center h-auto w-[90%] mx-auto rounded-tl-lg rounded-tr-lg font-neuropol"  style={{backgroundColor: '#0e02a4'}}>
-              
               {
                 currentView === 'stats' &&
                 <div className="flex flex-col h-[60vh] overflow-y-scroll w-full py-3 gap-2">
