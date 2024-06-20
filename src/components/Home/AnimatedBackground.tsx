@@ -19,6 +19,7 @@ import GoldCoinIcon from '../GoldCoinIcon';
 import RangeInput from '../RangeInput/RangeInput';
 import TimesIconRed from '../TimesIconRed';
 import ChevronDown from '../ChevronDown';
+import WheelSpinNew from '../WheelSpin/WheelChart';
 
 const brightColors = [
   { name: "Electric Lime", code: "#CCFF00" },

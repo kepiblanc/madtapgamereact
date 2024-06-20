@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './wheelSpin.css';
-import wheelSpinImg from '../../assets/wheelSpin.png';
+import wheelSpinImg from '../../assets/wheelSpinNew.png';
 import RangeInput from '../RangeInput/RangeInput';
 import axios from 'axios';
 import { API_URL } from '../../utils';
@@ -56,7 +56,7 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
     setIsSpinning(true);
 
     const spinDuration = 6 //Math.floor(Math.random() * 5) + 7; // Random duration between 7 and 12 seconds
-    const rotateDegrees = Math.floor(Math.random() * 360) + 3600; // Random degrees + multiple spins
+    const rotateDegrees = Math.floor(Math.random() * 360) + 3600;  //Random degrees + multiple spins
 
     // Reset the wheel rotation
     if (wheelRef.current) {
@@ -76,6 +76,8 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
       const finalRotation = 360 - (rotateDegrees % 360);
       let points = getPoints(finalRotation)
 
+      console.log({finalRotation, rotateDegrees, points})
+
       setPointsNo(points);
       runFloaters(e)
       const updatePoints = await axios.post(`${API_URL}/update-tap-points`, {
@@ -88,13 +90,6 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
       })
       console.log(`Points: ${points}`, {updatePoints}, {recordSpin});
       setSpinsLeft(recordSpin?.data?.spinsLeft)
-      if (wheelRef.current) {
-        wheelRef.current.style.transition = 'none';
-        wheelRef.current.style.transform = 'rotate(0deg)';
-  
-        // Force reflow to reset the transition
-        void wheelRef.current.offsetHeight;
-      }
     }, spinDuration * 1000);
   };
 
@@ -107,7 +102,7 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
     if (e > 21000000) return 'Titan';
   }
 
-  const getPoints = (rotation: number): number => {
+  /*const getPoints = (rotation: number): number => {
     const sections = [
       { start: 0, end: 30, points: 3000 },
       { start: 30, end: 60, points: 50 },
@@ -130,8 +125,34 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
     }
 
     return 0;
-  };
+  };*/
 
+  const getPoints = (rotation: number): number => {
+    const sections = [
+      { start: 0, end: 15, points: 3000 },
+      { start: 15, end: 45, points: 10000 },
+      { start: 45, end: 75, points: 500 },
+      { start: 75, end: 105, points: 7000 },
+      { start: 105, end: 135, points: 17000 },
+      { start: 135, end: 165, points: 50000 },
+      { start: 165, end: 195, points: 100 },
+      { start: 195, end: 225, points: 2000 },
+      { start: 225, end: 255, points: 30000 },
+      { start: 255, end: 285, points: 5000 },
+      { start: 285, end: 315, points: 50 },
+      { start: 315, end: 345, points: 4000 },
+      { start: 345, end: 360, points: 3000 },
+    ];
+
+    for (let section of sections) {
+      if (rotation >= section.start && rotation <= section.end) {
+        return section.points;
+      }
+    }
+
+    return 0;
+  };
+  
   const data = {
     labels: [
       '3000', '50', '5000', '30000', 
@@ -152,8 +173,8 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
           '#960001', '#fffece', '#960001', '#fffece',
           '#960001', '#fffece', '#960001', '#fffece',
         ],
-        borderColor: '#d9cd9d', // Custom border color
-        borderWidth: 5, // Custom border width
+        //borderColor: '#d9cd9d', // Custom border color
+        //borderWidth: 5, // Custom border width
       },
     ],
   };
@@ -199,6 +220,26 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
     },
   };
 
+  const outerBorderPlugin = {
+    id: 'outerBorderPlugin',
+    beforeDraw: (chart: any) => {
+      const ctx = chart.ctx;
+      const chartArea = chart.chartArea;
+      const { top, left, bottom, right } = chartArea;
+      const { outerRadius } = chart.getDatasetMeta(0).data[0];
+
+      const centerX = (left + right) / 2;
+      const centerY = (top + bottom) / 2;
+
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(centerX, centerY, outerRadius, 0, 2 * Math.PI);
+      ctx.lineWidth = 5; // Set the border width
+      ctx.strokeStyle = '#d9cd9d'; // Set the border color
+      ctx.stroke();
+      ctx.restore();
+    }
+  };
 
 
   return (
@@ -230,10 +271,12 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
             ))}
         </div>
         <div className="wheel-container relative">
-            {/*<img src={wheelSpinImg} alt="Wheel" ref={wheelRef} className="wheel" />*/}
             <div ref={wheelRef} className="wheel">
-              <Pie data={data} options={options} width={250} height={250} plugins={[drawTextPlugin]} />
+              <img src={wheelSpinImg} alt="Wheel" />
             </div>
+            {/*<div ref={wheelRef} className="wheel">
+              <Pie data={data} options={options} width={250} height={250} plugins={[drawTextPlugin, outerBorderPlugin]} />
+            </div>*/}
             <div className="absolute top-0 left-1/2 transform -translate-x-1/2 pointer"></div>
         </div>
         <div>
