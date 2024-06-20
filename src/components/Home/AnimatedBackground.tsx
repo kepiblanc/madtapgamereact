@@ -83,7 +83,9 @@ const AnimatedBackground = () => {
   const [startPlay, setStartPlay] = useState(false);
   const [playerLevel, setPlayerLevel] = useState('Rookie');
   const [referralRewardDeets, setReferralRewardDeets] = useState<any>();
-  const [earnView, setEarnView] = useState('socials')
+  const [earnView, setEarnView] = useState('milestones');
+  const [totalSpins, setTotalSpins] = useState(0);
+  const [lastTotalSpinClaim, setLastTotalSpinClaim] = useState(0);
 
   // clipboard.js
   function copyToClipboard(value: any) {
@@ -195,6 +197,8 @@ const AnimatedBackground = () => {
       if (getUserData?.data?.userData?.referralCode) setReferralCode(getUserData?.data?.userData?.referralCode)
       if (getUserData?.data?.userData?.referralPoints) setReferralPoints(getUserData?.data?.userData?.referralPoints)
       if (getUserData?.data?.userData?.referralRewardDeets) setReferralRewardDeets(getUserData?.data?.userData?.referralRewardDeets)
+      if (getUserData?.data?.userData?.lastTotalSpinClaim) setLastTotalSpinClaim(getUserData?.data?.userData?.lastTotalSpinClaim)
+      if (getUserData?.data?.userData?.totalSpins) setTotalSpins(getUserData?.data?.userData?.totalSpins)
     }
     if (user) {
       fetchUserData();
@@ -223,7 +227,6 @@ const AnimatedBackground = () => {
   }, [])
 
   const setRewardClaim = async (deet: any) => {
-    console.log(deet, user);
     try {
       const sendClaim = await axios.put(`${API_URL}/updateReferralReward`, {user, claimTreshold: deet.claimTreshold})
 
@@ -236,6 +239,22 @@ const AnimatedBackground = () => {
       toast.error('Error while claiming');
     }
     
+  }
+
+  const setMilestoneRewardClaim = async (lastTotalSpinClaimNo: any, rewardValue: any) => {
+    console.log({lastTotalSpinClaimNo, rewardValue})
+    try {
+      const sendClaim = await axios.put(`${API_URL}/updateMilestoneReward`, {user, lastTotalSpinClaim: lastTotalSpinClaimNo, rewardValue})
+
+      if (sendClaim?.data?.pointsNo) setGamePlayPoints(sendClaim?.data?.pointsNo)
+      if (sendClaim?.data?.totalSpins) setTotalSpins(sendClaim?.data?.totalSpins)
+      if (sendClaim?.data?.lastTotalSpinClaim) setLastTotalSpinClaim(sendClaim?.data?.lastTotalSpinClaim)
+      console.log(sendClaim)
+      toast.success('Claimed successfully');
+    } catch (error) {
+      console.log(error)
+      toast.error('Error while claiming');
+    }
   }
 
   const handlePlayerLevel = (e: any) => {
@@ -465,7 +484,11 @@ const AnimatedBackground = () => {
                               </div>
                             </div>
                             <div className="flex justify-center items-center">
-                              <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded">Claim</button>
+                              {
+                                totalSpins >= 25 && lastTotalSpinClaim <= 25 ?
+                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => setMilestoneRewardClaim(25, 100000)}>Claim</button> :
+                                <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
+                              }
                             </div>
                           </div>
                         </div>
@@ -484,7 +507,11 @@ const AnimatedBackground = () => {
                               </div>
                             </div>
                             <div className="flex justify-center items-center">
-                              <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded">Claim</button>
+                              {
+                                totalSpins >= 50 && lastTotalSpinClaim <= 50 ?
+                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => setMilestoneRewardClaim(50, 150000)}>Claim</button> :
+                                <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
+                              }
                             </div>
                           </div>
                         </div>
@@ -503,7 +530,11 @@ const AnimatedBackground = () => {
                               </div>
                             </div>
                             <div className="flex justify-center items-center">
-                              <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded">Claim</button>
+                              {
+                                totalSpins >= 75 && lastTotalSpinClaim <= 75 ?
+                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => setMilestoneRewardClaim(75, 200000)}>Claim</button> :
+                                <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
+                              }
                             </div>
                           </div>
                         </div>
