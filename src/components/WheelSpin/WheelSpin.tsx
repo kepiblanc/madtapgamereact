@@ -11,6 +11,7 @@ import WheelChart from './WheelChart';
 import { Pie } from 'react-chartjs-2';
 import 'chart.js/auto';
 import { Chart, ArcElement, Tooltip, Legend } from 'chart.js';
+import CountdownTimer from '../CountdownTimer';
 
 Chart.register(ArcElement, Tooltip, Legend);
 
@@ -292,7 +293,8 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
       <div className="flex flex-col items-center justify-center w-full">
         <p className="font-neuropol text-white">{spinsLeft}/3 Spins</p>
         <RangeInput rangeValue={(spinsLeft / 3) * 100} />
-        </div>
+        {spinsLeft === 0 && <CountdownTimer />}
+      </div>
     </div>
   );
 };
