@@ -352,7 +352,7 @@ const AnimatedBackground = () => {
                   </div>
                   <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3">
                     <div className="w-[40%]">
-                    <button className="font-neuropol py-2 text-[#000] rounded text-xs w-full" style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} onClick={() => {copyToClipboard(`https://t.me/mad_tap_bot?start=${referralCode}`)}}>Copy Link</button>
+                    <button className="font-neuropol py-2 text-[#000] rounded text-xs w-full" style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} onClick={() => {copyToClipboard(`https://t.me/omni_spin_bot?start=${referralCode}`)}}>Copy Link</button>
                     </div>
                     <p className="flex items-center justify-start text-white w-[60%] font-bold">Invite</p>
                   </div>
