@@ -1,1 +1,1 @@
-export const API_URL = 'https://madtapbackend.onrender.com'
+export const API_URL = 'https://app.omnispin.xyz/'
