@@ -1,1 +1,1 @@
-export const API_URL = 'https://app.omnispin.xyz/'
+export const API_URL = 'https://app.omnispin.xyz'
