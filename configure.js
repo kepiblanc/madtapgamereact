@@ -61,7 +61,7 @@ let githubUsername, githubRepo, botUsername;
   ).catch(exitError);
 
   botUsername = getBot.data.result.username;
-  const url = `https://madtapgame.onrender.com/`;
+  const url = `https://www.omnispin.xyz/`;
 
   console.log(`\n\nSetting bot ${botUsername} webapp url to ${url}`);
 

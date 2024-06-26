@@ -15,7 +15,7 @@ import CountdownTimer from '../CountdownTimer';
 
 Chart.register(ArcElement, Tooltip, Legend);
 
-const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGamePointsUpdate}) => {
+const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGamePointsUpdate, updateSpins}) => {
   const wheelRef = useRef<HTMLImageElement>(null);
   const [isSpinning, setIsSpinning] = useState<boolean>(false);
   const [floaters, setFloaters] = useState<any>([]);
@@ -102,6 +102,10 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
     if (e > 7000000 && e <= 21000000) return 'Legendary';
     if (e > 21000000) return 'Titan';
   }
+
+  useEffect(() => {
+    if (updateSpins.run) setSpinsLeft(updateSpins.spinsLeft)
+  }, [updateSpins])
 
   /*const getPoints = (rotation: number): number => {
     const sections = [

@@ -86,6 +86,13 @@ const AnimatedBackground = () => {
   const [earnView, setEarnView] = useState('milestones');
   const [totalSpins, setTotalSpins] = useState(0);
   const [lastTotalSpinClaim, setLastTotalSpinClaim] = useState(0);
+  const [engageLike, setEngageLike] = useState(false);
+  const [engageRepost, setEngageRepost] = useState(false);
+  const [engageTag, setEngageTag] = useState(false);
+  const [updateSpins, setUpdateSpins] = useState({
+    run: false,
+    spinsLeft: 0
+  })
 
   // clipboard.js
   function copyToClipboard(value: any) {
@@ -257,6 +264,27 @@ const AnimatedBackground = () => {
     }
   }
 
+  const claimExtraSpins = async (spins: number, taskType: string) => {
+    console.log({user, spins})
+
+    try {
+      const sendClaim = await axios.post(`${API_URL}/update-spins`, {user, extraSpins: spins})
+
+      console.log(sendClaim)
+      toast.success('Claimed successfully');
+      setUpdateSpins({
+        run: true,
+        spinsLeft: sendClaim?.data?.updatedUser?.spinsLeft
+      })
+      if (taskType === 'like') setEngageLike(false)
+      if (taskType === 'repost') setEngageRepost(false)
+      if (taskType === 'tag') setEngageTag(false)
+    } catch (error) {
+      console.log(error)
+      toast.error('Error while claiming');
+    }
+  }
+
   const handlePlayerLevel = (e: any) => {
     if (e <= 500000) return 'Rookie';
     if (e > 500000 && e <= 1250000) return 'Beginner';
@@ -297,7 +325,7 @@ const AnimatedBackground = () => {
         <div className="min-h-screen bg-cover bg-center" style={{backgroundImage: `url('${madTapIsto}')`}}>
           
           <div className="flex flex-col h-[80vh] gap-3 overflow-y-scroll">
-            <WheelSpin user={user} playerLevel={playerLevel} gamePlayPoints={gamePlayPoints} handleGamePointsUpdate={(e: any) => setGamePlayPoints(e)} />
+            <WheelSpin user={user} playerLevel={playerLevel} gamePlayPoints={gamePlayPoints} handleGamePointsUpdate={(e: any) => setGamePlayPoints(e)} updateSpins={updateSpins} />
           </div>
 
           <div className="w-full mx-auto h-auto py-3 absolute bottom-0 fixed">
@@ -416,13 +444,25 @@ const AnimatedBackground = () => {
                         <div className="w-[90%] flex flex-col">
                           <div className="flex justify-between">
                             <div className="flex flex-col">
-                              <p className="text-white text-xs">Engage On X</p>
+                              <p className="text-white text-xs">Like Post On X</p>
                               <div className="flex">
                                 <div className="w-full text-xs text-[#E8BC6A]">1 extra spin</div>
                               </div>
+                              <div className="flex">
+                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => {
+                                  setTimeout(() => {
+                                    setEngageLike(true)
+                                  }, 60000)
+                                  window.open('https://x.com/OmniPillar_?t=YWhC4VwPIqgwFaKEfmRvRQ&s=09', '_blank')
+                                }}>Engage</button>
+                              </div>
                             </div>
                             <div className="flex justify-center items-center">
-                              <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded">Claim</button>
+                              {
+                                engageLike ? 
+                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => claimExtraSpins(1, 'like')}>Claim</button>:
+                                <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
+                              }
                             </div>
                           </div>
                         </div>
@@ -439,9 +479,21 @@ const AnimatedBackground = () => {
                               <div className="flex">
                                 <div className="w-full text-xs text-[#E8BC6A]">2 extra spins</div>
                               </div>
+                              <div className="flex">
+                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => {
+                                  setTimeout(() => {
+                                    setEngageRepost(true)
+                                  }, 60000)
+                                  window.open('https://x.com/OmniPillar_?t=YWhC4VwPIqgwFaKEfmRvRQ&s=09', '_blank')
+                                }}>Engage</button>
+                              </div>
                             </div>
                             <div className="flex justify-center items-center">
-                              <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded">Claim</button>
+                              {
+                                engageRepost ? 
+                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => claimExtraSpins(2, 'repost')}>Claim</button>:
+                                <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
+                              }
                             </div>
                           </div>
                         </div>
@@ -458,9 +510,21 @@ const AnimatedBackground = () => {
                               <div className="flex">
                                 <div className="w-full text-xs text-[#E8BC6A]">3 extra spins</div>
                               </div>
+                              <div className="flex">
+                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => {
+                                  setTimeout(() => {
+                                    setEngageTag(true)
+                                  }, 60000)
+                                  window.open('https://x.com/OmniPillar_?t=YWhC4VwPIqgwFaKEfmRvRQ&s=09', '_blank')
+                                }}>Engage</button>
+                              </div>
                             </div>
                             <div className="flex justify-center items-center">
-                              <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded">Claim</button>
+                              {
+                                engageTag ? 
+                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded"  onClick={() => claimExtraSpins(3, 'tag')}>Claim</button>:
+                                <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
+                              }
                             </div>
                           </div>
                         </div>
