@@ -295,8 +295,8 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
         </div>
       
       <div className="flex flex-col items-center justify-center w-full">
-        <p className="font-neuropol text-white">{spinsLeft}/3 Spins</p>
-        <RangeInput rangeValue={(spinsLeft / 3) * 100} />
+        <p className="font-neuropol text-white">{spinsLeft} spins left</p>
+        {/*<RangeInput rangeValue={(spinsLeft / 3) * 100} />*/}
         {spinsLeft === 0 && <CountdownTimer />}
       </div>
     </div>
