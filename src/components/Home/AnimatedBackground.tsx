@@ -258,7 +258,7 @@ const AnimatedBackground = () => {
       if (sendClaim?.data?.pointsNo) setGamePlayPoints(sendClaim?.data?.pointsNo)
       if (sendClaim?.data?.totalSpins) setTotalSpins(sendClaim?.data?.totalSpins)
       if (sendClaim?.data?.lastTotalSpinClaim) setLastTotalSpinClaim(sendClaim?.data?.lastTotalSpinClaim)
-      console.log(sendClaim)
+      console.log({sendClaim})
       toast.success('Claimed successfully');
     } catch (error) {
       console.log(error)
@@ -614,8 +614,10 @@ const AnimatedBackground = () => {
                             </div>
                             <div className="flex justify-center items-center">
                               {
-                                totalSpins >= 25 && lastTotalSpinClaim <= 25 ?
+                                totalSpins >= 25 && lastTotalSpinClaim < 25 ?
                                 <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => setMilestoneRewardClaim(25, 100000)}>Claim</button> :
+                                lastTotalSpinClaim >= 25 ?
+                                <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Completed</button> :
                                 <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
                               }
                             </div>
@@ -637,8 +639,10 @@ const AnimatedBackground = () => {
                             </div>
                             <div className="flex justify-center items-center">
                               {
-                                totalSpins >= 50 && lastTotalSpinClaim <= 50 ?
+                                totalSpins >= 50 && lastTotalSpinClaim < 50 ?
                                 <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => setMilestoneRewardClaim(50, 150000)}>Claim</button> :
+                                lastTotalSpinClaim >= 50 ?
+                                <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Completed</button> :
                                 <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
                               }
                             </div>
@@ -660,8 +664,10 @@ const AnimatedBackground = () => {
                             </div>
                             <div className="flex justify-center items-center">
                               {
-                                totalSpins >= 75 && lastTotalSpinClaim <= 75 ?
+                                totalSpins >= 75 && lastTotalSpinClaim < 75 ?
                                 <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => setMilestoneRewardClaim(75, 200000)}>Claim</button> :
+                                lastTotalSpinClaim >= 75 ?
+                                <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Completed</button> :
                                 <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
                               }
                             </div>
