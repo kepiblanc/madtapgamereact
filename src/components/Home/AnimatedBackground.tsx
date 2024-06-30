@@ -83,12 +83,13 @@ const AnimatedBackground = () => {
   const [startPlay, setStartPlay] = useState(false);
   const [playerLevel, setPlayerLevel] = useState('Rookie');
   const [referralRewardDeets, setReferralRewardDeets] = useState<any>();
+  const [socialRewardDeets, setSocialRewardDeets] = useState<any>();
   const [earnView, setEarnView] = useState('milestones');
   const [totalSpins, setTotalSpins] = useState(0);
   const [lastTotalSpinClaim, setLastTotalSpinClaim] = useState(0);
   const [engageLike, setEngageLike] = useState(false);
   const [engageRepost, setEngageRepost] = useState(false);
-  const [engageTag, setEngageTag] = useState(false);
+  const [engageTelegram, setEngageTelegram] = useState(false);
   const [engageFollow, setEngageFollow] = useState(false);
   const [engageDiscord, setEngageDiscord] = useState(false);
   const [updateSpins, setUpdateSpins] = useState({
@@ -206,6 +207,7 @@ const AnimatedBackground = () => {
       if (getUserData?.data?.userData?.referralCode) setReferralCode(getUserData?.data?.userData?.referralCode)
       if (getUserData?.data?.userData?.referralPoints) setReferralPoints(getUserData?.data?.userData?.referralPoints)
       if (getUserData?.data?.userData?.referralRewardDeets) setReferralRewardDeets(getUserData?.data?.userData?.referralRewardDeets)
+      if (getUserData?.data?.userData?.socialRewardDeets) setSocialRewardDeets(getUserData?.data?.userData?.socialRewardDeets)
       if (getUserData?.data?.userData?.lastTotalSpinClaim) setLastTotalSpinClaim(getUserData?.data?.userData?.lastTotalSpinClaim)
       if (getUserData?.data?.userData?.totalSpins) setTotalSpins(getUserData?.data?.userData?.totalSpins)
     }
@@ -267,20 +269,22 @@ const AnimatedBackground = () => {
   }
 
   const claimExtraSpins = async (spins: number, taskType: string) => {
-    console.log({user, spins})
+    console.log({user, spins, taskType})
 
     try {
       const sendClaim = await axios.post(`${API_URL}/update-spins`, {user, extraSpins: spins})
+      const sendSocialClaim = await axios.put(`${API_URL}/updateSocialReward`, {user, claimTreshold: taskType})
 
-      console.log(sendClaim)
+      console.log({sendSocialClaim})
       toast.success('Claimed successfully');
       setUpdateSpins({
         run: true,
         spinsLeft: sendClaim?.data?.updatedUser?.spinsLeft
       })
+      setSocialRewardDeets(sendSocialClaim?.data?.socialRewardDeets)
       if (taskType === 'like') setEngageLike(false)
       if (taskType === 'repost') setEngageRepost(false)
-      if (taskType === 'tag') setEngageTag(false)
+      if (taskType === 'telegram') setEngageTelegram(false)
       if (taskType === 'follow') setEngageFollow(false)
       if (taskType === 'discord') setEngageDiscord(false)
     } catch (error) {
@@ -440,161 +444,211 @@ const AnimatedBackground = () => {
                   
                   {
                     earnView === 'socials' &&
-                    <>
-                      <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3 rounded-md p-3" style={{backgroundColor: 'rgba(0, 0, 0, 0.56)'}}>
-                        <div className="w-[10%]">
-                          <img src={task} alt="Referral" className="w-[5vh]" />
-                        </div>
-                        <div className="w-[90%] flex flex-col">
-                          <div className="flex justify-between">
-                            <div className="flex flex-col">
-                              <p className="text-white text-xs">Follow Twitter</p>
-                              <div className="flex">
-                                <div className="w-full text-xs text-[#E8BC6A]">1 extra spin</div>
+                    <>{
+                      socialRewardDeets && socialRewardDeets.map((reward: any) => (
+                        <>
+                          {
+                            reward.claimTreshold  === 'follow' &&
+                            <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3 rounded-md p-3" style={{backgroundColor: 'rgba(0, 0, 0, 0.56)'}}>
+                              <div className="w-[10%]">
+                                <img src={task} alt="Referral" className="w-[5vh]" />
                               </div>
-                              <div className="flex">
-                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => {
-                                  setTimeout(() => {
-                                    setEngageFollow(true)
-                                  }, 60000)
-                                  window.open('https://x.com/OmniPillar_?t=YWhC4VwPIqgwFaKEfmRvRQ&s=09', '_blank')
-                                }}>Engage</button>
-                              </div>
-                            </div>
-                            <div className="flex justify-center items-center">
-                              {
-                                engageFollow ? 
-                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded"  onClick={() => claimExtraSpins(1, 'follow')}>Claim</button>:
-                                <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
-                              }
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3 rounded-md p-3" style={{backgroundColor: 'rgba(0, 0, 0, 0.56)'}}>
-                        <div className="w-[10%]">
-                          <img src={task} alt="Referral" className="w-[5vh]" />
-                        </div>
-                        <div className="w-[90%] flex flex-col">
-                          <div className="flex justify-between">
-                            <div className="flex flex-col">
-                              <p className="text-white text-xs">Like Post On Twitter</p>
-                              <div className="flex">
-                                <div className="w-full text-xs text-[#E8BC6A]">1 extra spin</div>
-                              </div>
-                              <div className="flex">
-                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => {
-                                  setTimeout(() => {
-                                    setEngageLike(true)
-                                  }, 60000)
-                                  window.open('https://x.com/OmniPillar_?t=YWhC4VwPIqgwFaKEfmRvRQ&s=09', '_blank')
-                                }}>Engage</button>
+                              <div className="w-[90%] flex flex-col">
+                                <div className="flex justify-between">
+                                  <div className="flex flex-col">
+                                    <p className="text-white text-xs">Follow Twitter</p>
+                                    <div className="flex">
+                                      <div className="w-full text-xs text-[#E8BC6A]">1 extra spin</div>
+                                    </div>
+                                    <div className="flex">
+                                      {
+                                        reward.rewardClaimed ? 
+                                        <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Completed</button> :
+                                         <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => {
+                                          setTimeout(() => {
+                                            setEngageFollow(true)
+                                          }, 60000)
+                                          window.open('https://x.com/OmniPillar_?t=YWhC4VwPIqgwFaKEfmRvRQ&s=09', '_blank')
+                                        }}>Engage</button>
+                                      }                                     
+                                    </div>
+                                  </div>
+                                  <div className="flex justify-center items-center">
+                                    {
+                                      engageFollow ? 
+                                      <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded"  onClick={() => claimExtraSpins(1, 'follow')}>Claim</button>:
+                                      reward.rewardClaimed ? 
+                                      <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Completed</button> :
+                                      <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
+                                    }
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                            <div className="flex justify-center items-center">
-                              {
-                                engageLike ? 
-                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => claimExtraSpins(1, 'like')}>Claim</button>:
-                                <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
-                              }
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                          }
 
-                      <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3 rounded-md p-3" style={{backgroundColor: 'rgba(0, 0, 0, 0.56)'}}>
-                        <div className="w-[10%]">
-                          <img src={task} alt="Referral" className="w-[5vh]" />
-                        </div>
-                        <div className="w-[90%] flex flex-col">
-                          <div className="flex justify-between">
-                            <div className="flex flex-col">
-                              <p className="text-white text-xs">Repost on Twitter</p>
-                              <div className="flex">
-                                <div className="w-full text-xs text-[#E8BC6A]">1 extra spin</div>
+                          {
+                            reward.claimTreshold  === 'like' &&
+                            <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3 rounded-md p-3" style={{backgroundColor: 'rgba(0, 0, 0, 0.56)'}}>
+                              <div className="w-[10%]">
+                                <img src={task} alt="Referral" className="w-[5vh]" />
                               </div>
-                              <div className="flex">
-                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => {
-                                  setTimeout(() => {
-                                    setEngageRepost(true)
-                                  }, 60000)
-                                  window.open('https://x.com/OmniPillar_?t=YWhC4VwPIqgwFaKEfmRvRQ&s=09', '_blank')
-                                }}>Engage</button>
+                              <div className="w-[90%] flex flex-col">
+                                <div className="flex justify-between">
+                                  <div className="flex flex-col">
+                                    <p className="text-white text-xs">Like Post On Twitter</p>
+                                    <div className="flex">
+                                      <div className="w-full text-xs text-[#E8BC6A]">1 extra spin</div>
+                                    </div>
+                                    <div className="flex">
+                                      {
+                                        reward.rewardClaimed ? 
+                                        <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Completed</button> :
+                                        <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => {
+                                          setTimeout(() => {
+                                            setEngageLike(true)
+                                          }, 60000)
+                                          window.open('https://x.com/OmniPillar_?t=YWhC4VwPIqgwFaKEfmRvRQ&s=09', '_blank')
+                                        }}>Engage</button>
+                                      }                                      
+                                    </div>
+                                  </div>
+                                  <div className="flex justify-center items-center">
+                                    {
+                                      engageLike ? 
+                                      <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => claimExtraSpins(1, 'like')}>Claim</button>:
+                                      reward.rewardClaimed ? 
+                                      <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Completed</button> :
+                                      <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
+                                    }
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                            <div className="flex justify-center items-center">
-                              {
-                                engageRepost ? 
-                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => claimExtraSpins(1, 'repost')}>Claim</button>:
-                                <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
-                              }
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                          }
 
-                      <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3 rounded-md p-3" style={{backgroundColor: 'rgba(0, 0, 0, 0.56)'}}>
-                        <div className="w-[10%]">
-                          <img src={task} alt="Referral" className="w-[5vh]" />
-                        </div>
-                        <div className="w-[90%] flex flex-col">
-                          <div className="flex justify-between">
-                            <div className="flex flex-col">
-                              <p className="text-white text-xs">Telegram Channel</p>
-                              <div className="flex">
-                                <div className="w-full text-xs text-[#E8BC6A]">1 extra spin</div>
+                          {
+                            reward.claimTreshold  === 'repost' &&
+                            <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3 rounded-md p-3" style={{backgroundColor: 'rgba(0, 0, 0, 0.56)'}}>
+                              <div className="w-[10%]">
+                                <img src={task} alt="Referral" className="w-[5vh]" />
                               </div>
-                              <div className="flex">
-                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => {
-                                  setTimeout(() => {
-                                    setEngageTag(true)
-                                  }, 60000)
-                                  window.open('https://t.me/omnipillar', '_blank')
-                                }}>Engage</button>
+                              <div className="w-[90%] flex flex-col">
+                                <div className="flex justify-between">
+                                  <div className="flex flex-col">
+                                    <p className="text-white text-xs">Repost on Twitter</p>
+                                    <div className="flex">
+                                      <div className="w-full text-xs text-[#E8BC6A]">1 extra spin</div>
+                                    </div>
+                                    <div className="flex">
+                                      {
+                                        reward.rewardClaimed ? 
+                                        <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Completed</button> :
+                                        <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => {
+                                          setTimeout(() => {
+                                            setEngageRepost(true)
+                                          }, 60000)
+                                          window.open('https://x.com/OmniPillar_?t=YWhC4VwPIqgwFaKEfmRvRQ&s=09', '_blank')
+                                        }}>Engage</button>
+                                      }
+                                    </div>
+                                  </div>
+                                  <div className="flex justify-center items-center">
+                                    {
+                                      engageRepost ? 
+                                      <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => claimExtraSpins(1, 'repost')}>Claim</button>:
+                                      reward.rewardClaimed ? 
+                                      <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Completed</button> :
+                                      <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
+                                    }
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                            <div className="flex justify-center items-center">
-                              {
-                                engageTag ? 
-                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded"  onClick={() => claimExtraSpins(1, 'tag')}>Claim</button>:
-                                <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
-                              }
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                          }
 
-                      <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3 rounded-md p-3" style={{backgroundColor: 'rgba(0, 0, 0, 0.56)'}}>
-                        <div className="w-[10%]">
-                          <img src={task} alt="Referral" className="w-[5vh]" />
-                        </div>
-                        <div className="w-[90%] flex flex-col">
-                          <div className="flex justify-between">
-                            <div className="flex flex-col">
-                              <p className="text-white text-xs">Discord</p>
-                              <div className="flex">
-                                <div className="w-full text-xs text-[#E8BC6A]">1 extra spin</div>
+                          {
+                            reward.claimTreshold  === 'telegram' &&
+                            <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3 rounded-md p-3" style={{backgroundColor: 'rgba(0, 0, 0, 0.56)'}}>
+                              <div className="w-[10%]">
+                                <img src={task} alt="Referral" className="w-[5vh]" />
                               </div>
-                              <div className="flex">
-                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => {
-                                  setTimeout(() => {
-                                    setEngageDiscord(true)
-                                  }, 60000)
-                                  window.open('https://discord.com/invite/t2HZu25UxP', '_blank')
-                                }}>Engage</button>
+                              <div className="w-[90%] flex flex-col">
+                                <div className="flex justify-between">
+                                  <div className="flex flex-col">
+                                    <p className="text-white text-xs">Telegram Channel</p>
+                                    <div className="flex">
+                                      <div className="w-full text-xs text-[#E8BC6A]">1 extra spin</div>
+                                    </div>
+                                    <div className="flex">
+                                      {
+                                        reward.rewardClaimed ? 
+                                        <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Completed</button> :
+                                        <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => {
+                                          setTimeout(() => {
+                                            setEngageTelegram(true)
+                                          }, 60000)
+                                          window.open('https://t.me/omnipillar', '_blank')
+                                        }}>Engage</button>
+                                      }
+                                    </div>
+                                  </div>
+                                  <div className="flex justify-center items-center">
+                                    {
+                                      engageTelegram ? 
+                                      <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded"  onClick={() => claimExtraSpins(1, 'telegram')}>Claim</button>:
+                                      reward.rewardClaimed ? 
+                                      <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Completed</button> :
+                                      <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
+                                    }
+                                  </div>
+                                </div>
                               </div>
                             </div>
-                            <div className="flex justify-center items-center">
-                              {
-                                engageDiscord ? 
-                                <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded"  onClick={() => claimExtraSpins(1, 'discord')}>Claim</button>:
-                                <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
-                              }
+                          }
+
+                          {
+                            reward.claimTreshold  === 'discord' &&
+                            <div className="flex w-[90%] sm:w-[70%] md:w-[50%] mx-auto gap-2 my-3 rounded-md p-3" style={{backgroundColor: 'rgba(0, 0, 0, 0.56)'}}>
+                              <div className="w-[10%]">
+                                <img src={task} alt="Referral" className="w-[5vh]" />
+                              </div>
+                              <div className="w-[90%] flex flex-col">
+                                <div className="flex justify-between">
+                                  <div className="flex flex-col">
+                                    <p className="text-white text-xs">Discord</p>
+                                    <div className="flex">
+                                      <div className="w-full text-xs text-[#E8BC6A]">1 extra spin</div>
+                                    </div>
+                                    <div className="flex">
+                                      {
+                                        reward.rewardClaimed ? 
+                                        <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Completed</button> :
+                                        <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => {
+                                          setTimeout(() => {
+                                            setEngageDiscord(true)
+                                          }, 60000)
+                                          window.open('https://discord.com/invite/t2HZu25UxP', '_blank')
+                                        }}>Engage</button>
+                                      }
+                                    </div>
+                                  </div>
+                                  <div className="flex justify-center items-center">
+                                    {
+                                      engageDiscord ? 
+                                      <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded"  onClick={() => claimExtraSpins(1, 'discord')}>Claim</button>:
+                                      reward.rewardClaimed ? 
+                                      <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Completed</button> :
+                                      <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Claim</button>
+                                    }
+                                  </div>
+                                </div>
+                              </div>
                             </div>
-                          </div>
-                        </div>
-                      </div>
-                    </>
+                          }
+                        </>
+                      ))
+                    }</>
                   }
 
                   {
