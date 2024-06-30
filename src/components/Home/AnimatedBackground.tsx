@@ -463,7 +463,7 @@ const AnimatedBackground = () => {
                                     <div className="flex">
                                       {
                                         reward.rewardClaimed ? 
-                                        <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Completed</button> :
+                                        <></> :
                                          <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => {
                                           setTimeout(() => {
                                             setEngageFollow(true)
@@ -503,7 +503,7 @@ const AnimatedBackground = () => {
                                     <div className="flex">
                                       {
                                         reward.rewardClaimed ? 
-                                        <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Completed</button> :
+                                        <></> :
                                         <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => {
                                           setTimeout(() => {
                                             setEngageLike(true)
@@ -543,7 +543,7 @@ const AnimatedBackground = () => {
                                     <div className="flex">
                                       {
                                         reward.rewardClaimed ? 
-                                        <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Completed</button> :
+                                        <></> :
                                         <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => {
                                           setTimeout(() => {
                                             setEngageRepost(true)
@@ -583,7 +583,7 @@ const AnimatedBackground = () => {
                                     <div className="flex">
                                       {
                                         reward.rewardClaimed ? 
-                                        <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Completed</button> :
+                                        <></> :
                                         <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => {
                                           setTimeout(() => {
                                             setEngageTelegram(true)
@@ -623,7 +623,7 @@ const AnimatedBackground = () => {
                                     <div className="flex">
                                       {
                                         reward.rewardClaimed ? 
-                                        <button className="font-neuropol px-4 py-2 text-white text-xs rounded"  style={{backgroundColor: 'rgba(255, 255, 255, 0.5)'}} disabled>Completed</button> :
+                                        <></> :
                                         <button className="font-neuropol px-4 py-2 bg-[#00B806] text-white text-xs rounded" onClick={() => {
                                           setTimeout(() => {
                                             setEngageDiscord(true)
