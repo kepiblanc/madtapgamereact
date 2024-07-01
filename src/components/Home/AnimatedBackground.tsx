@@ -508,7 +508,7 @@ const AnimatedBackground = () => {
                                           setTimeout(() => {
                                             setEngageLike(true)
                                           }, 60000)
-                                          window.open('https://x.com/OmniPillar_?t=YWhC4VwPIqgwFaKEfmRvRQ&s=09', '_blank')
+                                          window.open('https://x.com/OmniPillar_/status/1807726461480054789?s=19', '_blank')
                                         }}>Engage</button>
                                       }                                      
                                     </div>
@@ -548,7 +548,7 @@ const AnimatedBackground = () => {
                                           setTimeout(() => {
                                             setEngageRepost(true)
                                           }, 60000)
-                                          window.open('https://x.com/OmniPillar_?t=YWhC4VwPIqgwFaKEfmRvRQ&s=09', '_blank')
+                                          window.open('https://x.com/OmniPillar_/status/1807726461480054789?s=19', '_blank')
                                         }}>Engage</button>
                                       }
                                     </div>
