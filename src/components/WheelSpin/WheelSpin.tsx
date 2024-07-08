@@ -47,8 +47,11 @@ const WheelSpin: React.FC<any> = ({user, playerLevel, gamePlayPoints, handleGame
       }, 2000);
   } 
 
-  const spinWheel = (e: any) => {
-    if (spinsLeft < 1) {
+  const spinWheel = async (e: any) => {
+    const getUserDataSpin = await axios.post(`${API_URL}/get-user-data`, {user})
+      
+    const noOfSpinsLeft = getUserDataSpin?.data?.userData?.spinsLeft;
+    if (noOfSpinsLeft < 1) {
         toast.error('You have no wheel spins left for today');
         return;
     }

@@ -80,6 +80,7 @@ const AnimatedBackground = () => {
   const [referralCode, setReferralCode] = useState('Not Available');
   const [referralPoints, setReferralPoints] = useState(0)
   const [leaderboardData, setLeaderboardData] = useState<any>([])
+  const [leaderboardLoading, setLeaderboardLoading] = useState<boolean>(false)
   const [startPlay, setStartPlay] = useState(false);
   const [playerLevel, setPlayerLevel] = useState('Rookie');
   const [referralRewardDeets, setReferralRewardDeets] = useState<any>();
@@ -135,17 +136,6 @@ const AnimatedBackground = () => {
     }
   }
 
-
-  const mockLeaderboardData = [
-    { id: 1, name: 'John Doe', points: 28, referrals: 28, total: 22 },
-    { id: 2, name: 'Jane Doe', points: 32, referrals: 32, total: 22 },
-    { id: 3, name: 'Sam Smith', points: 24, referrals: 24, total: 22 },
-    { id: 4, name: 'Sara Connor', points: 29, referrals: 29, total: 22 },
-    { id: 5, name: 'Chris Evans', points: 35, referrals: 35, total: 22 },
-    { id: 6, name: 'Mia Wong', points: 30, referrals: 30, total: 22 },
-    // Add more data as needed
-  ];
-
   useEffect(() => {
     // Ensure the Telegram Web Apps SDK is ready
     Telegram.WebApp.ready();
@@ -170,35 +160,6 @@ const AnimatedBackground = () => {
     }
   }, []);
 
-  
-  const prevRangeValueRef = useRef(rangeValue);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      const prevRangeValue = prevRangeValueRef.current;
-      const hasIncreased = rangeValue > prevRangeValue;
-      if (!hasIncreased && rangeValue !== 0) {
-        if (pointsNo === 1 && rangeValue === 1) {
-          setHelixColor('white')
-        }
-
-        if (pointsNo !== 1 && rangeValue === 1) {
-          setPointsNo (pointsNo - 1)
-          setRangeValue(100)
-          setHelixColor('white')
-        } else {
-          setRangeValue(rangeValue - 1)
-        }
-      }
-
-      // Update the previous value to the current value for the next comparison
-      prevRangeValueRef.current = rangeValue;
-    }, 1000); // Check every 3 seconds
-
-    // Clean up the interval on component unmount
-    return () => clearInterval(interval);
-  }, [rangeValue]);
-
   useEffect (() => {
     const fetchUserData = async () => {
       const getUserData = await axios.post(`${API_URL}/get-user-data`, {user})
@@ -218,6 +179,7 @@ const AnimatedBackground = () => {
 
   useEffect (() => {
     const fetchLeaderboardData = async () => {
+      setLeaderboardLoading(true)
       const getLeaderboardData = await axios.post(`${API_URL}/leaderboard-data`, {})
 
       const sortedData = getLeaderboardData.data.leaderboardData.map((board: any) => {
@@ -233,6 +195,7 @@ const AnimatedBackground = () => {
       console.log({sortedData})
 
       setLeaderboardData(sortedData)
+      setLeaderboardLoading(false)
     }
     fetchLeaderboardData();
   }, [])
@@ -302,16 +265,6 @@ const AnimatedBackground = () => {
     if (e > 21000000) return 'Titan';
   }
 
-  const changeColor = () => {
-    const randomColor = brightColors[Math.floor(Math.random() * brightColors.length)].code;
-    setHelixColor(randomColor);
-  };
-
-  const changeBgGradient = () => {
-    const randomColor = gradients[Math.floor(Math.random() * gradients.length)];
-    setBgGradient(randomColor);
-  };
-
   const socialsBg = earnView === 'socials' ? {backgroundColor: 'rgba(0, 0, 0, 0.32)'} : {}
   const milestonesBg = earnView === 'milestones' ? {backgroundColor: 'rgba(0, 0, 0, 0.32)'} : {}
 
@@ -366,8 +319,18 @@ const AnimatedBackground = () => {
 
                   <div className="flex flex-col justify-center items-center w-full">
                     <p className="w-full items-center justify-center text-center text-white mt-1" style={{backgroundColor: 'rgba(0, 0, 0, 0.25)'}}>Leaderboard</p>
+
                     {
-                      leaderboardData && leaderboardData.map((board: any) => (
+                      leaderboardLoading &&
+                      <>
+                        <div className="flex items-center justify-center text-center text-white my-3">
+                          <p className="text-center text-lg my-3 mx-auto w-auto text-[#FFF]">Loading leaderboard....</p>
+                        </div>
+                        
+                      </>
+                    }
+                    {
+                      !leaderboardLoading && leaderboardData && leaderboardData.map((board: any) => (
                         <div className="flex w-full px-2 gap-2 my-1">
                           <p className="flex justify-start text-[10px] text-[#FFF] w-1/3">{board.name}</p>
                           <p className="flex justify-center text-[10px] text-[#FFF] w-1/3">{board.points}</p>
