@@ -93,6 +93,7 @@ const AnimatedBackground = () => {
   const [engageTelegram, setEngageTelegram] = useState(false);
   const [engageFollow, setEngageFollow] = useState(false);
   const [engageDiscord, setEngageDiscord] = useState(false);
+  const [showAnnouncement, setShowAnnouncement] = useState(false);
   const [updateSpins, setUpdateSpins] = useState({
     run: false,
     spinsLeft: 0
@@ -285,6 +286,18 @@ const AnimatedBackground = () => {
         </div> :
         <div className="min-h-screen bg-cover bg-center" style={{backgroundImage: `url('${madTapIsto}')`}}>
           
+          <div className="bg-black bg-opacity-50 rounded-lg p-3 my-1 w-[90%] mx-auto gap-1 text-[#FFF] justify-center items-center font-neuropol text-[8px] flex justify-between cursor-pointer" onClick={() => setShowAnnouncement(!showAnnouncement)}>
+              <p>New Announcement, click to reveal.</p>
+              <ChevronDown />
+            </div>
+          {
+            showAnnouncement &&
+            <div className="flex flex-col bg-black bg-opacity-50 rounded-lg p-3 my-1 w-[90%] mx-auto gap-1 text-[#FFF] justify-center items-center font-neuropol text-xs">
+              <p>You can now earn 250,000 Gold for every referrals that you have on Omnispin.</p>
+              <p>You also get 1M Gold as bonus as an early participant. Spin the Wheel of Luck and start earning Gold immediately.</p>
+            </div>
+          }
+
           <div className="flex flex-col h-[80vh] gap-3 overflow-y-scroll">
             <WheelSpin user={user} playerLevel={playerLevel} gamePlayPoints={gamePlayPoints} handleGamePointsUpdate={(e: any) => setGamePlayPoints(e)} updateSpins={updateSpins} />
           </div>
